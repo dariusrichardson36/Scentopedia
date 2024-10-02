@@ -1,6 +1,16 @@
+// src/App.tsx
+
+import Navbar from './components/Navbar.tsx'; // Adjust path as needed
+import 'bootstrap';
 
 function App() {
-  return <div><h1>Hello World</h1></div>
+  return (
+    <div>
+      <Navbar /> {/* Use the Navbar component here */}
+      <h1>Welcome to Scentopedia</h1>
+      {/* Your other components and content */}
+    </div>
+  );
 }
 
 export default App;
