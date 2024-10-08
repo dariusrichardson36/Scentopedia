@@ -1,5 +1,13 @@
+<<<<<<< HEAD
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
+=======
+// src/components/Navbar.tsx
+//import React from 'react';
+
+import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
+import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+>>>>>>> d3d65edac02d87fb833ba5402055d4a5248b5295
 
 const navigation = [
   { name: 'Fragrances', href: '#', current: true },
