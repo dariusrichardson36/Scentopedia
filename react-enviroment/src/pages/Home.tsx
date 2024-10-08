@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom';
 
 const Home: React.FC = () => {
   return (
-    <div>
+    <div className="overflow-hidden">
       {/* Section 1: Background Image */}
-      <div className="bg-[url('/parfums-de-marly-layton-featured-image-1024x640.png.jpeg')] bg-cover bg-local w-full min-h-screen">
-        <h1 className="text-white text-center mt-56 text-8xl" style={{ fontFamily: 'Bebas Neue, normal' }}>
+      <div className="bg-[url('/parfums-de-marly-layton-featured-image-1024x640.png.jpeg')] bg-cover bg-no-repeat bg-center w-full min-h-screen flex flex-col justify-center items-center">
+        <h1 className="text-white text-center mt-0 text-8xl" style={{ fontFamily: 'Bebas Neue, normal' }}>
           Welcome to the world of fragrance
         </h1>
-        <div className="py-20">
+        <div className="py-10">
           <p className="text-white text-center text-8xl pb-10" style={{ fontFamily: 'Bebas Neue, normal' }}>
             Find the scent for you
           </p>
