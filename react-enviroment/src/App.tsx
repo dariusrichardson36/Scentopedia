@@ -13,7 +13,7 @@ function App() {
   return (
     <Router>
       <Navbar />
-      <div className="container mx-auto p-4">
+      
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/fragrances" element={<Fragrances />} />
@@ -21,7 +21,7 @@ function App() {
           <Route path="/notes" element={<Notes />} />
           <Route path="/about" element={<About />} />
         </Routes>
-      </div>
+      
     </Router>
   );
 }
