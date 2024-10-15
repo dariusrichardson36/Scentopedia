@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // Import necessary modules for routing, components, and styling
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar'; // Navigation component
@@ -25,9 +26,38 @@ function App() {
           <Route path="/fragrances" element={<Fragrances />} />
         </Routes>
       </div>
+=======
+// src/App.tsx
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import 'bootstrap';
+import Home from './pages/Home';
+import Fragrances from './pages/Fragrances';
+import Brands from './pages/Brands';
+import Notes from './pages/Notes';
+import About from './pages/About';
+
+function App() {
+  return (
+    <Router>
+      <Navbar />
+      
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/fragrances" element={<Fragrances />} />
+          <Route path="/brands" element={<Brands />} />
+          <Route path="/notes" element={<Notes />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
+      
+>>>>>>> 8ca350c08266e305eecf79734583c74f89feb9f8
     </Router>
   );
 }
 
+<<<<<<< HEAD
 // Export the App component so it can be used as the main component in the application
+=======
+>>>>>>> 8ca350c08266e305eecf79734583c74f89feb9f8
 export default App;
