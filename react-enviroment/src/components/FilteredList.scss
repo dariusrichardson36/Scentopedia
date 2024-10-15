@@ -1,0 +1,47 @@
+// Custom styles for the FilteredList component
+
+// Center the filter container
+.container {
+  max-width: 300px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+// Add some spacing between accordion items
+.accordion-item {
+  margin-bottom: 15px;
+}
+
+// Add custom styling for the accordion header to make it stand out a bit more
+.accordion-header {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+// Keep the default bootstrap hover effect but add custom colors if needed
+.accordion-button:not(.collapsed) {
+  background-color: #f8f9fa; // Change this color if needed
+}
+
+// Styling for the price range label
+.price-slider {
+  margin-top: 10px;
+
+  .form-label {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+}
+
+// Adjusting the width of the input group inside the accordion
+.input-group {
+  margin-bottom: 10px;
+}
+
+// Custom styles for the list group items (checkboxes)
+.list-group-item {
+  padding: 10px 15px;
+  &:hover {
+    background-color: #f8f9fa; // Matches Bootstrap hover effect
+  }
+}
