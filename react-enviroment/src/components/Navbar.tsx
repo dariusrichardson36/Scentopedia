@@ -1,8 +1,10 @@
+
 // src/components/Navbar.tsx
 import React from 'react';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Link, useLocation } from 'react-router-dom';
+
 
 const navigation = [
   { name: 'Fragrances', href: '/fragrances' },
@@ -19,7 +21,7 @@ export default function Navbar() {
   const location = useLocation(); // Get current location to highlight active link
 
   return (
-    <Disclosure as="nav" className="bg-gray-300 h-24">
+    <Disclosure as="nav" className="bg-white h-24">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-24 items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -32,7 +34,7 @@ export default function Navbar() {
 
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex flex-shrink-0 items-center">
-              <span className="text-4xl font-semibold text-black" style={{ fontFamily: 'Bebas Neue, normal' }}>
+              <span className="text-4xl mr-5 font-semibold text-black" style={{ fontFamily: 'Bebas Neue, normal' }}>
                 SCENTOPEDIA
               </span>
             </div>
@@ -52,7 +54,7 @@ export default function Navbar() {
                 ))}
               </div>
 
-              <div className="ml-10 flex items-center space-x-2">
+              <div className="ml-10 pl-10  flex items-center space-x-2">
                 <input
                   type="text"
                   className="block w-64 px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -60,7 +62,7 @@ export default function Navbar() {
                 />
                 <button
                   type="button"
-                  className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   Search
                 </button>
