@@ -8,6 +8,7 @@ import Fragrances from './pages/Fragrances';
 import Brands from './pages/Brands';
 import Notes from './pages/Notes';
 import About from './pages/About';
+import TestPage from './pages/TestPage';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/brands" element={<Brands />} />
           <Route path="/notes" element={<Notes />} />
           <Route path="/about" element={<About />} />
+          <Route path="/testpage" element={<TestPage />} />
         </Routes>
       
     </Router>
