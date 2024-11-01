@@ -22,8 +22,12 @@ const FilteredList: React.FC = () => {
   const [selectedNotes, setSelectedNotes] = useState<string[]>([]);
   const [selectedAccords, setSelectedAccords] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([10, 100]);
+
+  // Search states for each filter section
   const [brandSearch, setBrandSearch] = useState<string>('');
   const [perfumerSearch, setPerfumerSearch] = useState<string>('');
+  const [noteSearch, setNoteSearch] = useState<string>('');
+  const [accordSearch, setAccordSearch] = useState<string>('');
 
   // Fetch data from Firestore
   useEffect(() => {
@@ -55,13 +59,21 @@ const FilteredList: React.FC = () => {
     );
   };
 
-  // Search filtering functions with checks for undefined values
+  // Filtered lists with search functionality
   const filteredBrands = brands.filter(
     brand => brand && brand.toLowerCase().includes(brandSearch.toLowerCase())
   );
 
   const filteredPerfumers = perfumers.filter(
     perfumer => perfumer && perfumer.toLowerCase().includes(perfumerSearch.toLowerCase())
+  );
+
+  const filteredNotes = notes.filter(
+    note => note && note.toLowerCase().includes(noteSearch.toLowerCase())
+  );
+
+  const filteredAccords = accords.filter(
+    accord => accord && accord.toLowerCase().includes(accordSearch.toLowerCase())
   );
 
   return (
@@ -123,8 +135,14 @@ const FilteredList: React.FC = () => {
         <Accordion.Item eventKey="2">
           <Accordion.Header>Notes</Accordion.Header>
           <Accordion.Body>
+            <InputGroup className="mb-3">
+              <FormControl
+                placeholder="Search Notes"
+                onChange={(e) => setNoteSearch(e.target.value)}
+              />
+            </InputGroup>
             <ListGroup>
-              {notes.map((note, index) => (
+              {filteredNotes.map((note, index) => (
                 <ListGroup.Item key={index}>
                   <Form.Check
                     type="checkbox"
@@ -142,8 +160,14 @@ const FilteredList: React.FC = () => {
         <Accordion.Item eventKey="3">
           <Accordion.Header>Accords</Accordion.Header>
           <Accordion.Body>
+            <InputGroup className="mb-3">
+              <FormControl
+                placeholder="Search Accords"
+                onChange={(e) => setAccordSearch(e.target.value)}
+              />
+            </InputGroup>
             <ListGroup>
-              {accords.map((accord, index) => (
+              {filteredAccords.map((accord, index) => (
                 <ListGroup.Item key={index}>
                   <Form.Check
                     type="checkbox"
