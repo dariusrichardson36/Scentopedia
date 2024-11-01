@@ -91,7 +91,7 @@ const FilteredList: React.FC = () => {
                 onChange={(e) => setBrandSearch(e.target.value)}
               />
             </InputGroup>
-            <ListGroup>
+            <ListGroup className="overflow-auto" style={{ maxHeight: '150px' }}>
               {filteredBrands.map((brand, index) => (
                 <ListGroup.Item key={index}>
                   <Form.Check
@@ -116,7 +116,7 @@ const FilteredList: React.FC = () => {
                 onChange={(e) => setPerfumerSearch(e.target.value)}
               />
             </InputGroup>
-            <ListGroup>
+            <ListGroup className="overflow-auto" style={{ maxHeight: '150px' }}>
               {filteredPerfumers.map((perfumer, index) => (
                 <ListGroup.Item key={index}>
                   <Form.Check
@@ -141,7 +141,7 @@ const FilteredList: React.FC = () => {
                 onChange={(e) => setNoteSearch(e.target.value)}
               />
             </InputGroup>
-            <ListGroup>
+            <ListGroup className="overflow-auto" style={{ maxHeight: '150px' }}>
               {filteredNotes.map((note, index) => (
                 <ListGroup.Item key={index}>
                   <Form.Check
@@ -166,7 +166,7 @@ const FilteredList: React.FC = () => {
                 onChange={(e) => setAccordSearch(e.target.value)}
               />
             </InputGroup>
-            <ListGroup>
+            <ListGroup className="overflow-auto" style={{ maxHeight: '150px' }}>
               {filteredAccords.map((accord, index) => (
                 <ListGroup.Item key={index}>
                   <Form.Check

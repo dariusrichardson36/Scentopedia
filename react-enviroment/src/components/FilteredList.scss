@@ -62,4 +62,10 @@
     width: 100%;       // Full width on smaller devices
     margin-left: 0;    // Align to the left on mobile devices
   }
+
+  .scrollable-list {
+    max-height: calc(1.5em * 5); // Adjust to fit around 5 items (1.5em is approximately the height of one item)
+    overflow-y: auto;             // Enables vertical scrolling
+  }
+  
 }
