@@ -2,7 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Accordion, ListGroup, Form, InputGroup, FormControl } from 'react-bootstrap';
 import { collection, getDocs } from 'firebase/firestore';
 import './FilteredList.scss';
-import { db } from '../../firebase';
+import { db } from '../../firebase.ts';
+import { FilterCriteria } from './types';
 
 // Define TypeScript interface for structure of Fragrance data from Firestore
 interface FragranceData {
@@ -18,7 +19,10 @@ interface FilterState {
   selected: string[];
 }
 
-// Reusable component for each filter category
+type FilteredListProps = {
+  onFilterChange: (filters: FilterCriteria) => void;
+};
+
 const FilterSection: React.FC<{
   title: string;
   items: string[];
@@ -69,20 +73,16 @@ const FilterSection: React.FC<{
   );
 };
 
-const FilteredList: React.FC = () => {
-  // State to store unique filter options for each category
+const FilteredList: React.FC<FilteredListProps> = ({ onFilterChange }) => {
   const [brands, setBrands] = useState<string[]>([]);
   const [perfumers, setPerfumers] = useState<string[]>([]);
   const [notes, setNotes] = useState<string[]>([]);
   const [accords, setAccords] = useState<string[]>([]);
 
-  // Consolidated state for each category's search and selected items
   const [brandFilter, setBrandFilter] = useState<FilterState>({ search: '', selected: [] });
   const [perfumerFilter, setPerfumerFilter] = useState<FilterState>({ search: '', selected: [] });
   const [noteFilter, setNoteFilter] = useState<FilterState>({ search: '', selected: [] });
   const [accordFilter, setAccordFilter] = useState<FilterState>({ search: '', selected: [] });
-
-  // State for price range
   const [priceRange, setPriceRange] = useState<[number, number]>([10, 100]);
 
   // Fetch data from Firestore on component mount
@@ -92,7 +92,6 @@ const FilteredList: React.FC = () => {
       const fragranceSnapshot = await getDocs(fragrancesCollection);
       const fragranceData = fragranceSnapshot.docs.map(doc => doc.data() as FragranceData);
 
-      // Extract unique values for each filter category and update states
       setBrands([...new Set(fragranceData.map(item => item.brandName).filter(Boolean) as string[])]);
       setPerfumers([...new Set(fragranceData.map(item => item.perfumer).filter(Boolean) as string[])]);
       setNotes([...new Set(fragranceData.flatMap(item => item.notes ?? []).filter(Boolean) as string[])]);
@@ -102,12 +101,22 @@ const FilteredList: React.FC = () => {
     fetchData();
   }, []);
 
+  // Update parent with current filter state whenever a filter changes
+  useEffect(() => {
+    onFilterChange({
+      brands: brandFilter.selected,
+      perfumers: perfumerFilter.selected,
+      notes: noteFilter.selected,
+      accords: accordFilter.selected,
+      priceRange,
+    });
+  }, [brandFilter, perfumerFilter, noteFilter, accordFilter, priceRange]);
+
   return (
     <div className="container mt-4">
       <h3>Filter Fragrances</h3>
       <Accordion defaultActiveKey="0">
         
-        {/* Filter sections for each category using the reusable FilterSection component */}
         <FilterSection
           title="Fragrance Brand"
           items={brands}
