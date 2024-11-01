@@ -49,8 +49,8 @@ const FragranceList: React.FC<FragranceListProps> = ({ filters }) => {
       {filteredFragrances.map((fragrance, index) => (
         <Col key={index} sm={6} md={4} lg={3} className="mb-4">
           <FragranceCard
-            imageUrl={fragrance.image || 'placeholder.jpg'} // Now using `image` instead of `brandImg`
-            name={fragrance.name || "Unknown"}              // Use fragrance name
+            imageUrl={fragrance.image || 'placeholder.jpg'} 
+            name={fragrance.name || "Unknown"}              
             brand={fragrance.brandName || "Unknown"}
             onImageClick={() => console.log(`Clicked on ${fragrance.name}`)}
             onBrandClick={() => console.log(`Clicked on ${fragrance.brandName}`)}
