@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import FilteredList from '../components/FilteredList';
 import FragranceList from '../components/FragranceList';
-import { FilterCriteria } from '../components/types';
+import { FilterCriteria } from '../types/types';
 
 const TestPage: React.FC = () => {
   const [filters, setFilters] = useState<FilterCriteria>({ brands: [], perfumers: [], notes: [], accords: [] });

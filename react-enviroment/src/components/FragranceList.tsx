@@ -3,7 +3,7 @@ import FragranceCard from './FragranceCard';
 import { Row, Col } from 'react-bootstrap';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase';
-import { FragranceData, FilterCriteria } from './types';
+import { FragranceData, FilterCriteria } from '../types/types';
 
 type FragranceListProps = {
   filters: FilterCriteria;

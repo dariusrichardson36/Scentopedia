@@ -3,7 +3,7 @@ import { Accordion, ListGroup, Form, InputGroup, FormControl } from 'react-boots
 import { collection, getDocs } from 'firebase/firestore';
 import './FilteredList.scss';
 import { db } from '../../firebase.ts';
-import { FilterCriteria } from './types';
+import { FilterCriteria } from '../types/types.ts';
 
 // Define TypeScript interface for structure of Fragrance data from Firestore
 interface FragranceData {
