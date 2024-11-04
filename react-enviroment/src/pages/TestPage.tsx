@@ -1,24 +1,16 @@
-import React from 'react';
-import FragranceCard from '../components/FragranceCard';
-import fragranceImage from '../placeholders/fragranceImage.jpg';
+import React, { useState } from 'react';
+import FilteredList from '../components/FilteredList';
+import FragranceList from '../components/FragranceList';
+import { FilterCriteria } from '../types/types';
 
 const TestPage: React.FC = () => {
-  const handleImageClick = () => {
-    alert('Image clicked!');
-  };
-
-  const handleBrandClick = () => {
-    alert('Brand clicked!');
-  };
+  const [filters, setFilters] = useState<FilterCriteria>({ brands: [], perfumers: [], notes: [], accords: [] });
 
   return (
-    <FragranceCard
-      imageUrl={fragranceImage}
-      name="L'Eau de Parfum"
-      brand="Maison Margiela"
-      onImageClick={handleImageClick}
-      onBrandClick={handleBrandClick}
-    />
+    <div>
+      <FilteredList onFilterChange={setFilters} />
+      <FragranceList filters={filters} />
+    </div>
   );
 };
 

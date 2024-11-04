@@ -1,136 +1,148 @@
-import React, { useState } from 'react';
-import { Accordion, Card, ListGroup, Form, InputGroup, FormControl } from 'react-bootstrap';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Accordion, ListGroup, Form, InputGroup, FormControl } from 'react-bootstrap';
+import { collection, getDocs } from 'firebase/firestore';
 import './FilteredList.scss';
+import { db } from '../../firebase.ts';
+import { FilterCriteria } from '../types/types.ts';
 
-// Sample data for testing
-const sampleData = {
-  brands: ['Brand A', 'Brand B', 'Brand C', 'Brand D'],
-  perfumers: ['Perfumer X', 'Perfumer Y', 'Perfumer Z'],
-  notes: ['Woody', 'Citrus', 'Floral', 'Spicy'],
-  ingredients: ['Ingredient 1', 'Ingredient 2', 'Ingredient 3', 'Ingredient 4'],
+// Define TypeScript interface for structure of Fragrance data from Firestore
+interface FragranceData {
+  brandName?: string;
+  perfumer?: string;
+  notes?: string[];
+  accords?: string[];
+}
+
+// Consolidated state type for search inputs and selected filters
+interface FilterState {
+  search: string;
+  selected: string[];
+}
+
+type FilteredListProps = {
+  onFilterChange: (filters: FilterCriteria) => void;
 };
 
-const FilteredList: React.FC = () => {
-  // State management
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
-  const [selectedPerfumers, setSelectedPerfumers] = useState<string[]>([]);
-  const [selectedNotes, setSelectedNotes] = useState<string[]>([]);
-  const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([10, 100]);
-  const [brandSearch, setBrandSearch] = useState<string>('');
-  const [perfumerSearch, setPerfumerSearch] = useState<string>('');
+const FilterSection: React.FC<{
+  title: string;
+  items: string[];
+  filterState: FilterState;
+  setFilterState: React.Dispatch<React.SetStateAction<FilterState>>;
+}> = ({ title, items, filterState, setFilterState }) => {
+  // Memoized filtered items based on search input
+  const filteredItems = useMemo(
+    () => items.filter(item => item.toLowerCase().includes(filterState.search.toLowerCase())),
+    [items, filterState.search]
+  );
 
-  // Generic handler for checkboxes
-  const handleCheckboxChange = (
-    selectedState: string[],
-    setSelectedState: React.Dispatch<React.SetStateAction<string[]>>,
-    value: string
-  ) => {
-    setSelectedState(
-      selectedState.includes(value)
-        ? selectedState.filter(item => item !== value)
-        : [...selectedState, value]
-    );
+  // Handler to toggle selected items
+  const handleCheckboxChange = (value: string) => {
+    setFilterState(prevState => ({
+      ...prevState,
+      selected: prevState.selected.includes(value)
+        ? prevState.selected.filter(item => item !== value)
+        : [...prevState.selected, value]
+    }));
   };
 
-  // Search filtering functions
-  const filteredBrands = sampleData.brands.filter(brand => brand.toLowerCase().includes(brandSearch.toLowerCase()));
-  const filteredPerfumers = sampleData.perfumers.filter(perfumer => perfumer.toLowerCase().includes(perfumerSearch.toLowerCase()));
+  return (
+    <Accordion.Item eventKey={title}>
+      <Accordion.Header>{title}</Accordion.Header>
+      <Accordion.Body>
+        <InputGroup className="mb-3">
+          <FormControl
+            placeholder={`Search ${title}`}
+            value={filterState.search}
+            onChange={(e) => setFilterState(prev => ({ ...prev, search: e.target.value }))}
+          />
+        </InputGroup>
+        <ListGroup className="overflow-auto" style={{ maxHeight: '150px' }}>
+          {filteredItems.map((item, index) => (
+            <ListGroup.Item key={index}>
+              <Form.Check
+                type="checkbox"
+                label={item}
+                checked={filterState.selected.includes(item)}
+                onChange={() => handleCheckboxChange(item)}
+              />
+            </ListGroup.Item>
+          ))}
+        </ListGroup>
+      </Accordion.Body>
+    </Accordion.Item>
+  );
+};
+
+const FilteredList: React.FC<FilteredListProps> = ({ onFilterChange }) => {
+  const [brands, setBrands] = useState<string[]>([]);
+  const [perfumers, setPerfumers] = useState<string[]>([]);
+  const [notes, setNotes] = useState<string[]>([]);
+  const [accords, setAccords] = useState<string[]>([]);
+
+  const [brandFilter, setBrandFilter] = useState<FilterState>({ search: '', selected: [] });
+  const [perfumerFilter, setPerfumerFilter] = useState<FilterState>({ search: '', selected: [] });
+  const [noteFilter, setNoteFilter] = useState<FilterState>({ search: '', selected: [] });
+  const [accordFilter, setAccordFilter] = useState<FilterState>({ search: '', selected: [] });
+  const [priceRange, setPriceRange] = useState<[number, number]>([10, 100]);
+
+  // Fetch data from Firestore on component mount
+  useEffect(() => {
+    const fetchData = async () => {
+      const fragrancesCollection = collection(db, 'Fragrance');
+      const fragranceSnapshot = await getDocs(fragrancesCollection);
+      const fragranceData = fragranceSnapshot.docs.map(doc => doc.data() as FragranceData);
+
+      setBrands([...new Set(fragranceData.map(item => item.brandName).filter(Boolean) as string[])]);
+      setPerfumers([...new Set(fragranceData.map(item => item.perfumer).filter(Boolean) as string[])]);
+      setNotes([...new Set(fragranceData.flatMap(item => item.notes ?? []).filter(Boolean) as string[])]);
+      setAccords([...new Set(fragranceData.flatMap(item => item.accords ?? []).filter(Boolean) as string[])]);
+    };
+
+    fetchData();
+  }, []);
+
+  // Update parent with current filter state whenever a filter changes
+  useEffect(() => {
+    onFilterChange({
+      brands: brandFilter.selected,
+      perfumers: perfumerFilter.selected,
+      notes: noteFilter.selected,
+      accords: accordFilter.selected,
+      priceRange,
+    });
+  }, [brandFilter, perfumerFilter, noteFilter, accordFilter, priceRange]);
 
   return (
     <div className="container mt-4">
       <h3>Filter Fragrances</h3>
       <Accordion defaultActiveKey="0">
         
-        {/* Fragrance Brand Accordion */}
-        <Accordion.Item eventKey="0">
-          <Accordion.Header>Fragrance Brand</Accordion.Header>
-          <Accordion.Body>
-            <InputGroup className="mb-3">
-              <FormControl
-                placeholder="Search Brands"
-                onChange={(e) => setBrandSearch(e.target.value)}
-              />
-            </InputGroup>
-            <ListGroup>
-              {filteredBrands.map((brand, index) => (
-                <ListGroup.Item key={index}>
-                  <Form.Check
-                    type="checkbox"
-                    label={brand}
-                    checked={selectedBrands.includes(brand)}
-                    onChange={() => handleCheckboxChange(selectedBrands, setSelectedBrands, brand)}
-                  />
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-          </Accordion.Body>
-        </Accordion.Item>
+        <FilterSection
+          title="Fragrance Brand"
+          items={brands}
+          filterState={brandFilter}
+          setFilterState={setBrandFilter}
+        />
+        <FilterSection
+          title="Perfumer"
+          items={perfumers}
+          filterState={perfumerFilter}
+          setFilterState={setPerfumerFilter}
+        />
+        <FilterSection
+          title="Notes"
+          items={notes}
+          filterState={noteFilter}
+          setFilterState={setNoteFilter}
+        />
+        <FilterSection
+          title="Accords"
+          items={accords}
+          filterState={accordFilter}
+          setFilterState={setAccordFilter}
+        />
 
-        {/* Perfumer Accordion */}
-        <Accordion.Item eventKey="1">
-          <Accordion.Header>Perfumer</Accordion.Header>
-          <Accordion.Body>
-            <InputGroup className="mb-3">
-              <FormControl
-                placeholder="Search Perfumers"
-                onChange={(e) => setPerfumerSearch(e.target.value)}
-              />
-            </InputGroup>
-            <ListGroup>
-              {filteredPerfumers.map((perfumer, index) => (
-                <ListGroup.Item key={index}>
-                  <Form.Check
-                    type="checkbox"
-                    label={perfumer}
-                    checked={selectedPerfumers.includes(perfumer)}
-                    onChange={() => handleCheckboxChange(selectedPerfumers, setSelectedPerfumers, perfumer)}
-                  />
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-          </Accordion.Body>
-        </Accordion.Item>
-
-        {/* Notes Accordion */}
-        <Accordion.Item eventKey="2">
-          <Accordion.Header>Notes</Accordion.Header>
-          <Accordion.Body>
-            <ListGroup>
-              {sampleData.notes.map((note, index) => (
-                <ListGroup.Item key={index}>
-                  <Form.Check
-                    type="checkbox"
-                    label={note}
-                    checked={selectedNotes.includes(note)}
-                    onChange={() => handleCheckboxChange(selectedNotes, setSelectedNotes, note)}
-                  />
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-          </Accordion.Body>
-        </Accordion.Item>
-
-        {/* Ingredients Accordion */}
-        <Accordion.Item eventKey="3">
-          <Accordion.Header>Ingredients</Accordion.Header>
-          <Accordion.Body>
-            <ListGroup>
-              {sampleData.ingredients.map((ingredient, index) => (
-                <ListGroup.Item key={index}>
-                  <Form.Check
-                    type="checkbox"
-                    label={ingredient}
-                    checked={selectedIngredients.includes(ingredient)}
-                    onChange={() => handleCheckboxChange(selectedIngredients, setSelectedIngredients, ingredient)}
-                  />
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-          </Accordion.Body>
-        </Accordion.Item>
-
-        {/* Price Range Accordion - moved to the bottom */}
+        {/* Price Range Section */}
         <Accordion.Item eventKey="4">
           <Accordion.Header>Price Range</Accordion.Header>
           <Accordion.Body>
@@ -146,7 +158,6 @@ const FilteredList: React.FC = () => {
             </Form.Group>
           </Accordion.Body>
         </Accordion.Item>
-
       </Accordion>
     </div>
   );
