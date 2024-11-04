@@ -34,7 +34,7 @@ export default function Navbar() {
 
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex flex-shrink-0 items-center">
-              <span className="text-4xl mr-5 font-semibold text-black" style={{ fontFamily: 'Bebas Neue, normal' }}>
+              <span className="text-4xl mr-5 font-semibold text-black font-title" >
                 SCENTOPEDIA
               </span>
             </div>
@@ -54,15 +54,15 @@ export default function Navbar() {
                 ))}
               </div>
 
-              <div className="ml-10 pl-10  flex items-center space-x-2">
+              <div className="ml-10 pl-16  flex items-center space-x-2">
                 <input
                   type="text"
-                  className="block w-64 px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="block w-64 px-4 py-2 border-2 border-gray-700 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   placeholder="Search fragrances..."
                 />
                 <button
                   type="button"
-                  className="px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="px-4 py-2 bg-white text-gray-900 rounded-md border-2 border-gray-700 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   Search
                 </button>

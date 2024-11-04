@@ -9,6 +9,7 @@ import Brands from './pages/Brands';
 import Notes from './pages/Notes';
 import About from './pages/About';
 import TestPage from './pages/TestPage';
+import EachFragrance from './pages/EachFragrance';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/notes" element={<Notes />} />
           <Route path="/about" element={<About />} />
           <Route path="/testpage" element={<TestPage />} />
+          <Route path="/eachfragrance" element={<EachFragrance />} />
         </Routes>
       
     </Router>
