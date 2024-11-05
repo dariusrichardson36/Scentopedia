@@ -67,5 +67,10 @@
     max-height: calc(1.5em * 5); // Adjust to fit around 5 items (1.5em is approximately the height of one item)
     overflow-y: auto;             // Enables vertical scrolling
   }
+
+  .filtered-list-group {
+    max-height: 150px;
+    overflow-y: auto;
+  }
   
 }
