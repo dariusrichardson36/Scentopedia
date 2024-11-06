@@ -49,8 +49,8 @@ export default function Navbar() {
                     className={classNames(
                       location.pathname === item.href
                         ? 'bg-gray-900 text-white'
-                        : 'text-gray-700 hover:bg-gray-500 hover:text-white',
-                      'rounded-md px-3 py-2 text-md font-medium transition duration-150 ease-in-out'
+                        : 'text-gray-900 hover:bg-gray-500 hover:text-white',
+                      'rounded-md px-3 py-2 text-xl font-medium font-title transition duration-150 ease-in-out'
                     )}
                   >
                     {item.name}
@@ -59,7 +59,7 @@ export default function Navbar() {
               </div>
 
               {/* Search Bar */}
-              <div className="ml-10 pl-16 flex items-center space-x-2">
+              <div className="ml-10 pl-16 flex items-center font-body space-x-2">
                 <input
                   type="text"
                   className="block w-64 px-4 py-2 border-2 border-gray-700 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -106,7 +106,7 @@ export default function Navbar() {
               // User is not logged in
               <button
                 onClick={login}
-                className="text-gray-900 font-semibold font-lg ml-10 px-3 py-2 bg-gray-100 rounded-md hover:bg-gray-300 transition duration-150 ease-in-out"
+                className="text-gray-900 text-lg font-xl ml-10 px-3 font-title py-2 bg-gray-100 rounded-md hover:bg-gray-300 transition duration-150 ease-in-out"
               >
                 Login
               </button>
