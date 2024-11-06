@@ -1,5 +1,7 @@
 // src/types/types.ts
 
+// src/types/types.ts
+
 export interface FragranceData {
   name?: string;                // Fragrance name
   brandName?: string;           // Brand name
@@ -13,9 +15,12 @@ export interface FragranceData {
     middle_notes?: string[];    // Middle notes array
     top_notes?: string[];       // Top notes array
   };
-  combinedNotes?: string[];     // Flattened array of all notes for filtering
+  combNotes?: string[];         // Combined array of all notes for filtering
 }
 
+
+
+// src/types/types.ts
 
 export interface FilterCriteria {
   brands: string[];                // Array of selected brands for filtering
@@ -24,3 +29,4 @@ export interface FilterCriteria {
   accords: string[];               // Array of selected accords for filtering
   priceRange?: [number, number];   // Optional price range for filtering
 }
+
