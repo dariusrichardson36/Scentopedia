@@ -5,5 +5,11 @@
 @tailwind components;
 @tailwind utilities;
 
+.font-title {
+    font-family: 'Bebas Neue', sans-serif;
+}
 
+.font-body {
+    font-family: 'Crimson Text', serif;
+}
 
