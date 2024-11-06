@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Accordion, ListGroup, Form, InputGroup, FormControl } from 'react-bootstrap';
 import { collection, getDocs } from 'firebase/firestore';
 import './FilteredList.scss';
-import { db } from '../../firebase.ts';
+import { db } from '../lib/firebase.ts';
 import { FilterCriteria } from '../types/types.ts';
 
 // Define TypeScript interface for structure of Fragrance data from Firestore
