@@ -22,7 +22,7 @@ export default function Navbar() {
 
   return (
     <Disclosure as="nav" className="bg-white h-24">
-      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl border-b-2 border-gray-400 px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-24 items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
             <Disclosure.Button className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
@@ -34,9 +34,9 @@ export default function Navbar() {
 
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex flex-shrink-0 items-center">
-              <span className="text-4xl mr-5 font-semibold text-black font-title" >
+            <Link to="/" className="text-4xl mr-5 font-semibold text-black font-title">
                 SCENTOPEDIA
-              </span>
+              </Link>
             </div>
             <div className="hidden sm:ml-6 sm:flex sm:space-x-4 items-center">
               <div className="flex space-x-4">
@@ -45,8 +45,8 @@ export default function Navbar() {
                     key={item.name}
                     to={item.href}
                     className={classNames(
-                      location.pathname === item.href ? 'bg-gray-900 text-white' : 'text-gray-700 hover:bg-gray-500 hover:text-white',
-                      'rounded-md px-3 py-2 text-md font-medium'
+                      location.pathname === item.href ? 'bg-gray-900 text-white' : 'text-gray-900 hover:bg-gray-500 hover:text-white',
+                      'rounded-md px-3 py-2 font-title text-xl '
                     )}
                   >
                     {item.name}
@@ -54,7 +54,7 @@ export default function Navbar() {
                 ))}
               </div>
 
-              <div className="ml-10 pl-16  flex items-center space-x-2">
+              <div className="ml-10 pl-16 font-body flex items-center space-x-2">
                 <input
                   type="text"
                   className="block w-64 px-4 py-2 border-2 border-gray-700 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -79,7 +79,7 @@ export default function Navbar() {
               <BellIcon aria-hidden="true" className="h-6 w-6" />
             </button>
 
-            <div className="text-gray-900 font-semibold font-lg ml-10">
+            <div className="text-gray-900 font-md font-title text-xl ml-10">
               Login
             </div>
           </div>
