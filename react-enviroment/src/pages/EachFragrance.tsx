@@ -52,7 +52,7 @@ const EachFragrance: React.FC = () => {
        </div>
 
        {/* Tabs Section */}
-       <div className="mt-10 w-full border-t-2 font-body border-gray-500 bg-gray-200">
+       <div className="mt-10 w-full border-t-2 font-body border-gray-500 bg-gray-100">
            <Box sx={{ width: '100%' }}>
                <Tabs value={value} onChange={handleChange} centered>
                    <Tab label="Description" sx={{ fontFamily: 'Roboto Condensed', fontSize: '1.1rem', fontWeight: 'md' }} />

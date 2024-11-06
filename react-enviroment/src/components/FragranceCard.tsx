@@ -11,7 +11,7 @@ type FragranceCardProps = {
 
 const FragranceCard: React.FC<FragranceCardProps> = ({ imageUrl, name, brand, onImageClick, onBrandClick }) => {
   return (
-    <Card className="m-3 shadow-sm text-center" style={{ width: '18rem' }}>
+    <Card className="m-3 shadow-md font-title text-center" style={{ width: '18rem' }}>
       {/* Image Button */}
       <Button variant="link" onClick={onImageClick} className="p-0 border-0">
         <Card.Img variant="top" src={imageUrl} alt={name} />
@@ -20,7 +20,7 @@ const FragranceCard: React.FC<FragranceCardProps> = ({ imageUrl, name, brand, on
         {/* Fragrance Name */}
         <Card.Title>{name}</Card.Title>
         {/* Brand Button */}
-        <Button variant="link" onClick={onBrandClick} className="text-muted p-0">
+        <Button variant="link" onClick={onBrandClick} className="text-black font-body p-0">
           {brand}
         </Button>
       </Card.Body>

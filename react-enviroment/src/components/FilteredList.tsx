@@ -53,13 +53,15 @@ const FilteredList: React.FC<{ onFilterChange: (criteria: FilterCriteria) => voi
 
   return (
     <div className="container mt-4">
-      <h3>Filter Fragrances</h3>
+      <h3 className="font-title text-3xl ">Filter Fragrances</h3>
+      <div className="font-body text-black ">
       <Accordion defaultActiveKey="0">
-        <FilterSection title="Fragrance Brand" items={brands} selectedItems={filterCriteria.brands} onChange={(item) => handleCheckboxChange('brands', item)} />
+        <FilterSection title="Brand" items={brands} selectedItems={filterCriteria.brands} onChange={(item) => handleCheckboxChange('brands', item)} />
         <FilterSection title="Perfumer" items={perfumers} selectedItems={filterCriteria.perfumers} onChange={(item) => handleCheckboxChange('perfumers', item)} />
         <FilterSection title="Notes" items={notes} selectedItems={filterCriteria.notes} onChange={(item) => handleCheckboxChange('notes', item)} />
         <FilterSection title="Accords" items={accords} selectedItems={filterCriteria.accords} onChange={(item) => handleCheckboxChange('accords', item)} />
       </Accordion>
+      </div>
     </div>
   );
 };
