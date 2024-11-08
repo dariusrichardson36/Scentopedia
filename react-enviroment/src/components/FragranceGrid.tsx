@@ -1,21 +1,38 @@
-import React, { useState } from 'react';
+// src/components/FragranceGrid.tsx
+import React from 'react';
 import { Row, Col } from 'react-bootstrap';
+import Fuse from 'fuse.js';
 import FragranceCard from './FragranceCard';
 import useFragrances from '../hooks/useFragrances';
 import { FilterCriteria } from '../types/types';
 
-const FragranceGrid: React.FC<{ filterCriteria: FilterCriteria }> = ({ filterCriteria }) => {
+type FragranceGridProps = {
+  filterCriteria: FilterCriteria;
+  nameQuery: string;
+};
+
+const FragranceGrid: React.FC<FragranceGridProps> = ({ filterCriteria, nameQuery }) => {
   const { fragrances, loading } = useFragrances();
 
   if (loading) return <p>Loading fragrances...</p>;
 
-  const filteredFragrances = fragrances.filter(f => {
-    return (
-      (filterCriteria.brands.length === 0 || filterCriteria.brands.includes(f.brandName || '')) &&
-      (filterCriteria.perfumers.length === 0 || filterCriteria.perfumers.includes(f.perfumer || '')) &&
-      (filterCriteria.notes.length === 0 || filterCriteria.notes.some(note => (f.notes?.base_notes || []).includes(note) || (f.notes?.middle_notes || []).includes(note) || (f.notes?.top_notes || []).includes(note))) &&
-      (filterCriteria.accords.length === 0 || filterCriteria.accords.some(accord => f.accords?.includes(accord)))
-    );
+  // Initialize Fuse for fuzzy searching on fragrance names
+  const fuse = new Fuse(fragrances, {
+    keys: ['fragranceName'],
+    threshold: 0.3,
+    distance: 100,
+  });
+
+  // Apply fuzzy search if there's a nameQuery; otherwise, use all fragrances
+  const fuzzyResults = nameQuery ? fuse.search(nameQuery).map(result => result.item) : fragrances;
+
+  // Enhanced filtering logic for brands (OR) and notes/accords (AND)
+  const filteredFragrances = fuzzyResults.filter(f => {
+    const matchesBrand = filterCriteria.brands.length === 0 || filterCriteria.brands.includes(f.brandName || '');
+    const matchesNotes = filterCriteria.notes.length === 0 || filterCriteria.notes.every(note => f.combNotes?.includes(note));
+    const matchesAccords = filterCriteria.accords.length === 0 || filterCriteria.accords.every(accord => f.accords?.includes(accord));
+
+    return matchesBrand && matchesNotes && matchesAccords;
   });
 
   return (
