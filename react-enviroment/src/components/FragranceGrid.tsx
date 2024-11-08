@@ -28,18 +28,9 @@ const FragranceGrid: React.FC<FragranceGridProps> = ({ filterCriteria, nameQuery
 
   // Enhanced filtering logic for brands (OR) and notes/accords (AND)
   const filteredFragrances = fuzzyResults.filter(f => {
-    // Brand filtering (OR): match if brandName is in selected brands, or no brands are selected
     const matchesBrand = filterCriteria.brands.length === 0 || filterCriteria.brands.includes(f.brandName || '');
-
-    // Notes filtering (AND): only show if fragrance has all selected notes in combNotes
-    const matchesNotes =
-      filterCriteria.notes.length === 0 ||
-      filterCriteria.notes.every(note => f.combNotes?.includes(note));
-
-    // Accords filtering (AND): only show if fragrance has all selected accords
-    const matchesAccords =
-      filterCriteria.accords.length === 0 ||
-      filterCriteria.accords.every(accord => f.accords?.includes(accord));
+    const matchesNotes = filterCriteria.notes.length === 0 || filterCriteria.notes.every(note => f.combNotes?.includes(note));
+    const matchesAccords = filterCriteria.accords.length === 0 || filterCriteria.accords.every(accord => f.accords?.includes(accord));
 
     return matchesBrand && matchesNotes && matchesAccords;
   });

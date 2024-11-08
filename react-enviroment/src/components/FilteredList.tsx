@@ -12,11 +12,10 @@ const FilterSection: React.FC<{
   onChange: (item: string) => void; 
   searchQuery: string; 
   onSearchChange: (query: string) => void; 
-}> = ({ title, items, selectedItems, onChange, searchQuery, onSearchChange }) => {
-  const fuse = new Fuse(items, { threshold: 0.4, distance: 100 });
-  const filteredItems = searchQuery
-    ? fuse.search(searchQuery).map(result => result.item)
-    : items;
+}> = React.memo(({ title, items, selectedItems, onChange, searchQuery, onSearchChange }) => {
+  // Memoize Fuse instance to avoid re-creating on each render
+  const fuse = useMemo(() => new Fuse(items, { threshold: 0.4, distance: 100 }), [items]);
+  const filteredItems = searchQuery ? fuse.search(searchQuery).map(result => result.item) : items;
 
   return (
     <Accordion.Item eventKey={title}>
@@ -44,11 +43,12 @@ const FilterSection: React.FC<{
       </Accordion.Body>
     </Accordion.Item>
   );
-};
+});
 
 const FilteredList: React.FC<{ onFilterChange: (criteria: FilterCriteria) => void; onNameQueryChange: (query: string) => void; }> = ({ onFilterChange, onNameQueryChange }) => {
   const { fragrances, loading } = useFragrances();
-  
+
+  // Memoize extracted filter lists to avoid recalculating on each render
   const brands = useMemo(() => [...new Set(fragrances.map(f => f.brandName).filter(Boolean) as string[])], [fragrances]);
   const perfumers = useMemo(() => [...new Set(fragrances.map(f => f.perfumer).filter(Boolean) as string[])], [fragrances]);
   const notes = useMemo(() => [...new Set(fragrances.flatMap(f => f.combNotes || []))], [fragrances]);
@@ -77,7 +77,7 @@ const FilteredList: React.FC<{ onFilterChange: (criteria: FilterCriteria) => voi
 
   const handleNameQueryChange = (query: string) => {
     setNameQuery(query);
-    onNameQueryChange(query); // Send fragrance name query to TestPage
+    onNameQueryChange(query);
   };
 
   if (loading) return <p>Loading fragrances...</p>;
