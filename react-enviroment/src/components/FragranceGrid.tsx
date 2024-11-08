@@ -24,9 +24,9 @@ const FragranceGrid: React.FC<{ filterCriteria: FilterCriteria }> = ({ filterCri
         <Col key={index} sm={6} md={4} lg={3} className="mb-4">
           <FragranceCard
             imageUrl={fragrance.image || 'placeholder.jpg'}
-            name={fragrance.name || 'Unknown'}
+            fragranceName={fragrance.fragranceName || 'Unknown'}
             brand={fragrance.brandName || 'Unknown'}
-            onImageClick={() => console.log(`Clicked on ${fragrance.name}`)}
+            onImageClick={() => console.log(`Clicked on ${fragrance.fragranceName}`)}
             onBrandClick={() => console.log(`Clicked on ${fragrance.brandName}`)}
           />
         </Col>

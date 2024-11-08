@@ -2,21 +2,24 @@
 
 // src/types/types.ts
 
+// src/types/types.ts
+
 export interface FragranceData {
-  name?: string;                // Fragrance name
-  brandName?: string;           // Brand name
-  perfumer?: string;            // Perfumer's name
-  accords?: string[];           // Array of accords
-  brandImg?: string;            // Main brand image URL
-  image?: string;               // Alternate image URL
-  description?: string;         // Description of the fragrance
+  fragranceName?: string;       // Change from name to fragranceName
+  brandName?: string;
+  perfumer?: string;
+  accords?: string[];
+  brandImg?: string;
+  image?: string;
+  description?: string;
   notes?: {
-    base_notes?: string[];      // Base notes array
-    middle_notes?: string[];    // Middle notes array
-    top_notes?: string[];       // Top notes array
+    base_notes?: string[];
+    middle_notes?: string[];
+    top_notes?: string[];
   };
-  combNotes?: string[];         // Combined array of all notes for filtering
+  combNotes?: string[];
 }
+
 
 
 
