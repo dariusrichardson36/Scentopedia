@@ -13,7 +13,6 @@ const FilterSection: React.FC<{
   searchQuery: string; 
   onSearchChange: (query: string) => void; 
 }> = React.memo(({ title, items, selectedItems, onChange, searchQuery, onSearchChange }) => {
-  // Memoize Fuse instance to avoid re-creating on each render
   const fuse = useMemo(() => new Fuse(items, { threshold: 0.4, distance: 100 }), [items]);
   const filteredItems = searchQuery ? fuse.search(searchQuery).map(result => result.item) : items;
 
@@ -48,7 +47,6 @@ const FilterSection: React.FC<{
 const FilteredList: React.FC<{ onFilterChange: (criteria: FilterCriteria) => void; onNameQueryChange: (query: string) => void; }> = ({ onFilterChange, onNameQueryChange }) => {
   const { fragrances, loading } = useFragrances();
 
-  // Memoize extracted filter lists to avoid recalculating on each render
   const brands = useMemo(() => [...new Set(fragrances.map(f => f.brandName).filter(Boolean) as string[])], [fragrances]);
   const perfumers = useMemo(() => [...new Set(fragrances.map(f => f.perfumer).filter(Boolean) as string[])], [fragrances]);
   const notes = useMemo(() => [...new Set(fragrances.flatMap(f => f.combNotes || []))], [fragrances]);
@@ -94,7 +92,7 @@ const FilteredList: React.FC<{ onFilterChange: (criteria: FilterCriteria) => voi
         />
       </InputGroup>
       <div className="font-body text-black">
-        <Accordion defaultActiveKey="0">
+        <Accordion defaultActiveKey="0" alwaysOpen>
           <FilterSection
             title="Brand"
             items={brands}

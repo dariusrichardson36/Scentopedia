@@ -1,7 +1,5 @@
-// src/components/FragranceGrid.tsx
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
-import Fuse from 'fuse.js';
 import FragranceCard from './FragranceCard';
 import useFragrances from '../hooks/useFragrances';
 import { FilterCriteria } from '../types/types';
@@ -16,29 +14,23 @@ const FragranceGrid: React.FC<FragranceGridProps> = ({ filterCriteria, nameQuery
 
   if (loading) return <p>Loading fragrances...</p>;
 
-  // Initialize Fuse for fuzzy searching on fragrance names
-  const fuse = new Fuse(fragrances, {
-    keys: ['fragranceName'],
-    threshold: 0.3,
-    distance: 100,
-  });
-
-  // Apply fuzzy search if there's a nameQuery; otherwise, use all fragrances
-  const fuzzyResults = nameQuery ? fuse.search(nameQuery).map(result => result.item) : fragrances;
-
-  // Enhanced filtering logic for brands (OR) and notes/accords (AND)
-  const filteredFragrances = fuzzyResults.filter(f => {
-    const matchesBrand = filterCriteria.brands.length === 0 || filterCriteria.brands.includes(f.brandName || '');
-    const matchesNotes = filterCriteria.notes.length === 0 || filterCriteria.notes.every(note => f.combNotes?.includes(note));
-    const matchesAccords = filterCriteria.accords.length === 0 || filterCriteria.accords.every(accord => f.accords?.includes(accord));
-
-    return matchesBrand && matchesNotes && matchesAccords;
+  const filteredFragrances = fragrances.filter(f => {
+    const matchesName = f.fragranceName?.toLowerCase().includes(nameQuery.toLowerCase()) ?? true;
+    return (
+      matchesName &&
+      (filterCriteria.brands.length === 0 || filterCriteria.brands.includes(f.brandName || '')) &&
+      (filterCriteria.perfumers.length === 0 || filterCriteria.perfumers.includes(f.perfumer || '')) &&
+      (filterCriteria.notes.length === 0 || filterCriteria.notes.some(note => 
+        (f.combNotes || []).includes(note)
+      )) &&
+      (filterCriteria.accords.length === 0 || filterCriteria.accords.every(accord => f.accords?.includes(accord)))
+    );
   });
 
   return (
-    <Row>
+    <Row className="gx-4 gy-4" style={{ alignItems: 'stretch' }}>
       {filteredFragrances.map((fragrance, index) => (
-        <Col key={index} sm={6} md={4} lg={3} className="mb-4">
+        <Col key={index} sm={6} md={4} lg={3} className="d-flex">
           <FragranceCard
             imageUrl={fragrance.image || 'placeholder.jpg'}
             fragranceName={fragrance.fragranceName || 'Unknown'}
