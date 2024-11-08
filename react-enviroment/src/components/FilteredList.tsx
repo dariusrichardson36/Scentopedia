@@ -18,7 +18,6 @@ const FilterSection: React.FC<{
     <Accordion.Item eventKey={title}>
       <Accordion.Header>{title}</Accordion.Header>
       <Accordion.Body>
-        {/* Search Bar for Filtering Items */}
         <InputGroup className="mb-3">
           <FormControl
             placeholder={`Search ${title}`}
@@ -26,7 +25,6 @@ const FilterSection: React.FC<{
             onChange={(e) => onSearchChange(e.target.value)}
           />
         </InputGroup>
-        {/* List of Filtered Items */}
         <ListGroup className="overflow-auto" style={{ maxHeight: '150px' }}>
           {filteredItems.map((item, index) => (
             <ListGroup.Item key={index}>
@@ -44,7 +42,7 @@ const FilterSection: React.FC<{
   );
 };
 
-const FilteredList: React.FC<{ onFilterChange: (criteria: FilterCriteria) => void }> = ({ onFilterChange }) => {
+const FilteredList: React.FC<{ onFilterChange: (criteria: FilterCriteria) => void; onNameQueryChange: (query: string) => void; }> = ({ onFilterChange, onNameQueryChange }) => {
   const { fragrances, loading } = useFragrances();
   
   const brands = useMemo(() => [...new Set(fragrances.map(f => f.brandName).filter(Boolean) as string[])], [fragrances]);
@@ -54,6 +52,7 @@ const FilteredList: React.FC<{ onFilterChange: (criteria: FilterCriteria) => voi
 
   const [filterCriteria, setFilterCriteria] = useState<FilterCriteria>({ brands: [], perfumers: [], notes: [], accords: [] });
   const [searchQueries, setSearchQueries] = useState({ brands: '', perfumers: '', notes: '', accords: '' });
+  const [nameQuery, setNameQuery] = useState('');
 
   const handleCheckboxChange = (type: keyof FilterCriteria, item: string) => {
     setFilterCriteria(prev => {
@@ -72,11 +71,24 @@ const FilteredList: React.FC<{ onFilterChange: (criteria: FilterCriteria) => voi
     setSearchQueries(prev => ({ ...prev, [type]: query }));
   };
 
+  const handleNameQueryChange = (query: string) => {
+    setNameQuery(query);
+    onNameQueryChange(query);
+  };
+
   if (loading) return <p>Loading fragrances...</p>;
 
   return (
     <div className="container mt-4">
       <h3 className="font-title text-3xl">Filter Fragrances</h3>
+      {/* Fragrance Name Search Bar */}
+      <InputGroup className="mb-3">
+        <FormControl
+          placeholder="Search Fragrance Names"
+          value={nameQuery}
+          onChange={(e) => handleNameQueryChange(e.target.value)}
+        />
+      </InputGroup>
       <div className="font-body text-black">
         <Accordion defaultActiveKey="0">
           <FilterSection

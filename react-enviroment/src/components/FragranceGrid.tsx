@@ -1,19 +1,31 @@
-import React, { useState } from 'react';
+// src/components/FragranceGrid.tsx
+import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import FragranceCard from './FragranceCard';
 import useFragrances from '../hooks/useFragrances';
 import { FilterCriteria } from '../types/types';
 
-const FragranceGrid: React.FC<{ filterCriteria: FilterCriteria }> = ({ filterCriteria }) => {
+type FragranceGridProps = {
+  filterCriteria: FilterCriteria;
+  nameQuery: string;  // Add nameQuery to props
+};
+
+const FragranceGrid: React.FC<FragranceGridProps> = ({ filterCriteria, nameQuery }) => {
   const { fragrances, loading } = useFragrances();
 
   if (loading) return <p>Loading fragrances...</p>;
 
   const filteredFragrances = fragrances.filter(f => {
+    const matchesName = f.fragranceName?.toLowerCase().includes(nameQuery.toLowerCase()) ?? true;
     return (
+      matchesName &&
       (filterCriteria.brands.length === 0 || filterCriteria.brands.includes(f.brandName || '')) &&
       (filterCriteria.perfumers.length === 0 || filterCriteria.perfumers.includes(f.perfumer || '')) &&
-      (filterCriteria.notes.length === 0 || filterCriteria.notes.some(note => (f.notes?.base_notes || []).includes(note) || (f.notes?.middle_notes || []).includes(note) || (f.notes?.top_notes || []).includes(note))) &&
+      (filterCriteria.notes.length === 0 || filterCriteria.notes.some(note => 
+        (f.notes?.base_notes || []).includes(note) || 
+        (f.notes?.middle_notes || []).includes(note) || 
+        (f.notes?.top_notes || []).includes(note)
+      )) &&
       (filterCriteria.accords.length === 0 || filterCriteria.accords.some(accord => f.accords?.includes(accord)))
     );
   });
