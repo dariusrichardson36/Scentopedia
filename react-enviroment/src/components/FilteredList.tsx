@@ -82,7 +82,7 @@ const FilteredList: React.FC<{ onFilterChange: (criteria: FilterCriteria) => voi
 
   return (
     <div className="container mt-4">
-      <h3 className="font-title text-3xl">Filter Fragrances</h3>
+      <h3 className="font-title text-3xl">Discover Your Fragrance</h3>
       {/* Fragrance Name Search Bar */}
       <InputGroup className="mb-3">
         <FormControl
