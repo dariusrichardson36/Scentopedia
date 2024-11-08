@@ -44,7 +44,7 @@ const FilterSection: React.FC<{
   );
 };
 
-const FilteredList: React.FC<{ onFilterChange: (criteria: FilterCriteria, fragranceNameQuery: string) => void }> = ({ onFilterChange }) => {
+const FilteredList: React.FC<{ onFilterChange: (criteria: FilterCriteria) => void }> = ({ onFilterChange }) => {
   const { fragrances, loading } = useFragrances();
   
   const brands = useMemo(() => [...new Set(fragrances.map(f => f.brandName).filter(Boolean) as string[])], [fragrances]);
@@ -54,7 +54,6 @@ const FilteredList: React.FC<{ onFilterChange: (criteria: FilterCriteria, fragra
 
   const [filterCriteria, setFilterCriteria] = useState<FilterCriteria>({ brands: [], perfumers: [], notes: [], accords: [] });
   const [searchQueries, setSearchQueries] = useState({ brands: '', perfumers: '', notes: '', accords: '' });
-  const [fragranceNameQuery, setFragranceNameQuery] = useState('');
 
   const handleCheckboxChange = (type: keyof FilterCriteria, item: string) => {
     setFilterCriteria(prev => {
@@ -64,7 +63,7 @@ const FilteredList: React.FC<{ onFilterChange: (criteria: FilterCriteria, fragra
         : [...selectedItems, item];
       
       const updatedCriteria = { ...prev, [type]: updatedItems };
-      onFilterChange(updatedCriteria, fragranceNameQuery);
+      onFilterChange(updatedCriteria);
       return updatedCriteria;
     });
   };
@@ -73,24 +72,11 @@ const FilteredList: React.FC<{ onFilterChange: (criteria: FilterCriteria, fragra
     setSearchQueries(prev => ({ ...prev, [type]: query }));
   };
 
-  const handleFragranceNameQueryChange = (query: string) => {
-    setFragranceNameQuery(query);
-    onFilterChange(filterCriteria, query);
-  };
-
   if (loading) return <p>Loading fragrances...</p>;
 
   return (
     <div className="container mt-4">
       <h3 className="font-title text-3xl">Filter Fragrances</h3>
-      {/* Fragrance Name Search Bar */}
-      <InputGroup className="mb-3">
-        <FormControl
-          placeholder="Search Fragrance Names"
-          value={fragranceNameQuery}
-          onChange={(e) => handleFragranceNameQueryChange(e.target.value)}
-        />
-      </InputGroup>
       <div className="font-body text-black">
         <Accordion defaultActiveKey="0">
           <FilterSection
