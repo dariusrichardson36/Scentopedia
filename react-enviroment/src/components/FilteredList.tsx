@@ -1,6 +1,7 @@
 // src/components/FilteredList.tsx
 import React, { useState, useMemo } from 'react';
 import { Accordion, ListGroup, Form, InputGroup, FormControl } from 'react-bootstrap';
+import Fuse from 'fuse.js';
 import useFragrances from '../hooks/useFragrances';
 import { FilterCriteria } from '../types/types';
 
@@ -12,7 +13,10 @@ const FilterSection: React.FC<{
   searchQuery: string; 
   onSearchChange: (query: string) => void; 
 }> = ({ title, items, selectedItems, onChange, searchQuery, onSearchChange }) => {
-  const filteredItems = items.filter(item => item.toLowerCase().includes(searchQuery.toLowerCase()));
+  const fuse = new Fuse(items, { threshold: 0.4, distance: 100 });
+  const filteredItems = searchQuery
+    ? fuse.search(searchQuery).map(result => result.item)
+    : items;
 
   return (
     <Accordion.Item eventKey={title}>
@@ -73,7 +77,7 @@ const FilteredList: React.FC<{ onFilterChange: (criteria: FilterCriteria) => voi
 
   const handleNameQueryChange = (query: string) => {
     setNameQuery(query);
-    onNameQueryChange(query);
+    onNameQueryChange(query); // Send fragrance name query to TestPage
   };
 
   if (loading) return <p>Loading fragrances...</p>;
