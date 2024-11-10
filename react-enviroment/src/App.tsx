@@ -15,8 +15,8 @@ import { AuthProvider } from './contexts/authContext/authProvider';
 function App() {
   return (
     <AuthProvider>
-    <Router>
-      <Navbar />
+      <Router>
+        <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/fragrances" element={<Fragrances />} />
@@ -24,9 +24,9 @@ function App() {
           <Route path="/notes" element={<Notes />} />
           <Route path="/about" element={<About />} />
           <Route path="/testpage" element={<TestPage />} />
-          <Route path="/eachfragrance" element={<EachFragrance />} />
+          <Route path="/fragrance/:id" element={<EachFragrance />} />
         </Routes>
-    </Router>
+      </Router>
     </AuthProvider>
   );
 }
