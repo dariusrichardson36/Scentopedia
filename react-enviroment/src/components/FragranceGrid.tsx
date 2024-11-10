@@ -17,15 +17,29 @@ const FragranceGrid: React.FC<FragranceGridProps> = ({ filterCriteria, nameQuery
 
   const filteredFragrances = fragrances.filter(f => {
     const matchesName = f.fragranceName?.toLowerCase().includes(nameQuery.toLowerCase()) ?? true;
-    return (
-      matchesName &&
-      (filterCriteria.brands.length === 0 || filterCriteria.brands.includes(f.brandName || '')) &&
-      (filterCriteria.perfumers.length === 0 || filterCriteria.perfumers.includes(f.perfumer || '')) &&
-      (filterCriteria.notes.length === 0 || filterCriteria.notes.some(note => 
-        (f.combNotes || []).includes(note)
-      )) &&
-      (filterCriteria.accords.length === 0 || filterCriteria.accords.every(accord => f.accords?.includes(accord)))
-    );
+
+    // Brand filtering (OR logic)
+    const matchesBrand = 
+      filterCriteria.brands.length === 0 || 
+      filterCriteria.brands.includes(f.brandName || '');
+
+    // Perfumer filtering (OR logic)
+    const matchesPerfumer = 
+      filterCriteria.perfumers.length === 0 || 
+      filterCriteria.perfumers.includes(f.perfumer || '');
+
+    // Notes filtering (AND logic)
+    const matchesNotes = 
+      filterCriteria.notes.length === 0 || 
+      filterCriteria.notes.every(note => (f.combNotes || []).includes(note));
+
+    // Accords filtering (AND logic)
+    const matchesAccords = 
+      filterCriteria.accords.length === 0 || 
+      filterCriteria.accords.every(accord => (f.accords || []).includes(accord));
+
+    // Combine all filters
+    return matchesName && matchesBrand && matchesPerfumer && matchesNotes && matchesAccords;
   });
 
   return (
