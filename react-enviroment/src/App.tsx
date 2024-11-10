@@ -10,7 +10,8 @@ import Notes from './pages/Notes';
 import About from './pages/About';
 import TestPage from './pages/TestPage';
 import FragrancePage from './pages/FragrancePage';
-import { AuthProvider } from './contexts/authContext/authProvider';
+import YourListsPage from './pages/YourListsPage';
+import { AuthProvider } from './contexts/authContext/AuthProvider';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/brands" element={<Brands />} />
           <Route path="/notes" element={<Notes />} />
           <Route path="/about" element={<About />} />
+          <Route path="/your-lists" element={<YourListsPage />} />
           <Route path="/testpage" element={<TestPage />} />
           <Route path="/fragrance/:id" element={<FragrancePage />} />
         </Routes>
