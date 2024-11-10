@@ -9,14 +9,14 @@ import Brands from './pages/Brands';
 import Notes from './pages/Notes';
 import About from './pages/About';
 import TestPage from './pages/TestPage';
-import EachFragrance from './pages/EachFragrance';
+import FragrancePage from './pages/FragrancePage';
 import { AuthProvider } from './contexts/authContext/authProvider';
 
 function App() {
   return (
     <AuthProvider>
-    <Router>
-      <Navbar />
+      <Router>
+        <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/fragrances" element={<Fragrances />} />
@@ -24,9 +24,9 @@ function App() {
           <Route path="/notes" element={<Notes />} />
           <Route path="/about" element={<About />} />
           <Route path="/testpage" element={<TestPage />} />
-          <Route path="/eachfragrance" element={<EachFragrance />} />
+          <Route path="/fragrance/:id" element={<FragrancePage />} />
         </Routes>
-    </Router>
+      </Router>
     </AuthProvider>
   );
 }

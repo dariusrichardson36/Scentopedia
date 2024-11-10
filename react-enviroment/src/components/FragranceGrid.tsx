@@ -1,3 +1,4 @@
+// src/components/FragranceGrid.tsx
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import FragranceCard from './FragranceCard';
@@ -35,8 +36,6 @@ const FragranceGrid: React.FC<FragranceGridProps> = ({ filterCriteria, nameQuery
             imageUrl={fragrance.image || 'placeholder.jpg'}
             fragranceName={fragrance.fragranceName || 'Unknown'}
             brand={fragrance.brandName || 'Unknown'}
-            onImageClick={() => console.log(`Clicked on ${fragrance.fragranceName}`)}
-            onBrandClick={() => console.log(`Clicked on ${fragrance.brandName}`)}
           />
         </Col>
       ))}
