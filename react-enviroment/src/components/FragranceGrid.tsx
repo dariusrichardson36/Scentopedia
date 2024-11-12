@@ -1,8 +1,9 @@
+// src/components/FragranceGrid.tsx
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import FragranceCard from './FragranceCard';
 import useFragrances from '../hooks/useFragrances';
-import { FilterCriteria } from '../types/types';
+import { FilterCriteria, FragranceData } from '../types/types';
 
 type FragranceGridProps = {
   filterCriteria: FilterCriteria;
@@ -33,13 +34,9 @@ const FragranceGrid: React.FC<FragranceGridProps> = ({ filterCriteria, nameQuery
 
   return (
     <Row className="gx-4 gy-4" style={{ alignItems: 'stretch' }}>
-      {paginatedFragrances.map((fragrance, index) => (
+      {paginatedFragrances.map((fragrance: FragranceData, index) => (
         <Col key={index} sm={6} md={4} lg={3} className="d-flex">
-          <FragranceCard
-            imageUrl={fragrance.image || 'placeholder.jpg'}
-            fragranceName={fragrance.fragranceName || 'Unknown'}
-            brand={fragrance.brandName || 'Unknown'}
-          />
+          <FragranceCard fragrance={fragrance} />
         </Col>
       ))}
     </Row>
