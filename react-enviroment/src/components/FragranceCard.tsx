@@ -2,31 +2,30 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { FragranceData } from '../types/types';
 
 type FragranceCardProps = {
-  imageUrl: string;
-  fragranceName: string;
-  brand: string;
+  fragrance: FragranceData;
 };
 
-const FragranceCard: React.FC<FragranceCardProps> = ({ imageUrl, fragranceName, brand }) => {
+const FragranceCard: React.FC<FragranceCardProps> = ({ fragrance }) => {
   const navigate = useNavigate();
 
   const handleImageClick = () => {
-    navigate(`/fragrance/${fragranceName}`); // Use document ID (fragranceName) for routing
+    navigate(`/fragrance/${fragrance.fragranceName}`); // Use document ID (fragranceName) for routing
   };
 
   return (
     <Card className="m-3 shadow-md font-title text-center" style={{ width: '18rem' }}>
       {/* Image Button */}
       <Button variant="link" onClick={handleImageClick} className="p-0 border-0">
-        <Card.Img variant="top" src={imageUrl} alt={fragranceName} />
+        <Card.Img variant="top" src={fragrance.image || '/placeholder.jpg'} alt={fragrance.fragranceName} />
       </Button>
       <Card.Body>
         {/* Fragrance Name */}
-        <Card.Title>{fragranceName}</Card.Title>
+        <Card.Title>{fragrance.fragranceName}</Card.Title>
         {/* Brand */}
-        <p>{brand}</p>
+        <p>{fragrance.brandName}</p>
       </Card.Body>
     </Card>
   );

@@ -1,0 +1,28 @@
+/* src/pages/Home.css */
+
+.scroll-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .scroll-content {
+    display: flex;
+    width: fit-content;
+    animation: scroll-left 60s linear infinite;
+  }
+  
+  @keyframes scroll-left {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  
+  .snap-start {
+    flex-shrink: 0;
+    width: 18rem; /* Match the width of the FragranceCard */
+  }
+  
