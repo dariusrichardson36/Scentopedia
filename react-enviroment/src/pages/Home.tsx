@@ -1,22 +1,9 @@
 // src/pages/Home.tsx
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import FragranceCard from '../components/FragranceCard';
-import useFragrances from '../hooks/useFragrances';
-import { FragranceData } from '../types/types';
-import './Home.css'; // Import a CSS file for the infinite scrolling effect
+import InfiniteScrollFragrances from '../components/InfiniteScrollFragrances';
 
 const Home: React.FC = () => {
-  const { fragrances } = useFragrances();
-  const [randomFragrances, setRandomFragrances] = useState<FragranceData[]>([]);
-
-  useEffect(() => {
-    if (fragrances.length > 0) {
-      const shuffled = [...fragrances].sort(() => 0.5 - Math.random());
-      setRandomFragrances(shuffled.slice(0, 10)); // Get 10 random fragrances
-    }
-  }, [fragrances]);
-
   return (
     <div className="overflow-hidden">
       {/* Section 1: Background Image */}
@@ -48,15 +35,7 @@ const Home: React.FC = () => {
         <p className="text-black text-center font-body max-w-3xl mx-auto text-2xl pb-10">
           Explore our wide collection of fragrances. Find something that suits your style and personality.
         </p>
-        <div className="scroll-container mt-20 pb-10">
-          <div className="scroll-content">
-            {randomFragrances.concat(randomFragrances).map((fragrance: FragranceData, index) => (
-              <div key={index} className="snap-start mx-4">
-                <FragranceCard fragrance={fragrance} />
-              </div>
-            ))}
-          </div>
-        </div>
+        <InfiniteScrollFragrances />
       </div>
 
       {/* Section 3: Additional Content */}
