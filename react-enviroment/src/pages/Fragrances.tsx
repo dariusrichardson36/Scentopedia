@@ -41,7 +41,7 @@ const Fragrances: React.FC = () => {
       <h2 className="text-4xl mb-8 font-title text-center">Fragrances</h2>
       
       <div className="flex flex-col md:flex-row">
-        <div className="md:w-1/4 mb-8 md:mb-0 md:mr-8">
+        <div className="md:w-1/4 mb-8 md:mb-0 md:mr-8 sticky top-4 self-start">
           <FilteredList 
             onFilterChange={handleFilterChange} // Modified handler to reset pagination
             onNameQueryChange={setNameQuery}
