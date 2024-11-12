@@ -1,8 +1,10 @@
 // src/components/Navbar.tsx
-import { Disclosure} from '@headlessui/react';
+import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/authContext/AuthProvider';
+import { useState } from 'react';
+import NavSearchBar from './NavSearchBar';
 
 const navigation = [
   { name: 'Fragrances', href: '/fragrances' },
@@ -17,6 +19,7 @@ function classNames(...classes: string[]) {
 export default function Navbar() {
   const location = useLocation();
   const { user, loading, login, logout } = useAuth();
+  const [searchQuery, setSearchQuery] = useState('');
 
   return (
     <Disclosure as="nav" className="bg-white h-24">
@@ -70,22 +73,10 @@ export default function Navbar() {
                   </Link>
                 )}
               </div>
-              </div>
-
-              {/* Search Bar */}
-              <div className="ml-10 pl-16 flex items-center font-body space-x-2">
-                <input
-                  type="text"
-                  className="block w-64 px-4 py-2 border-2 border-gray-700 rounded-md text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  placeholder="Search fragrances..."
-                />
-                <button
-                  type="button"
-                  className="px-4 py-2 bg-white text-gray-900 rounded-md border-2 border-gray-700 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
-                >
-                  Search
-                </button>
             </div>
+
+            {/* Nav Search Bar */}
+            <NavSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
           </div>
 
           {/* User Profile Section */}

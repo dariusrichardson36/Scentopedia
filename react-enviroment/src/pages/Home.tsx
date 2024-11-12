@@ -1,6 +1,7 @@
 // src/pages/Home.tsx
 import React from 'react';
 import { Link } from 'react-router-dom';
+import InfiniteScrollFragrances from '../components/InfiniteScrollFragrances';
 
 const Home: React.FC = () => {
   return (
@@ -18,7 +19,6 @@ const Home: React.FC = () => {
             <Link to="/fragrances">
               <button
                 className="bg-white text-black font- py-4 px-8 rounded-none font-title text-xl hover:bg-gray-200 transition duration-300 ease-in-out"
-                
               >
                 Find a Fragrance
               </button>
@@ -27,53 +27,15 @@ const Home: React.FC = () => {
         </div>
       </div>
 
-      {/* Section 2: New Background with Content and Photos at the Bottom */}
+      {/* Section 2: New Background with Content and Fragrance Cards Scrolling */}
       <div className="w-full min-h-screen bg-gray-100 pt-20">
         <h2 className="text-black font-title text-center text-5xl py-20">
           Discover More Fragrances
         </h2>
-        <p className="text-black text-center font-body -w-3xl mx-auto text-2xl pb-10">
+        <p className="text-black text-center font-body max-w-3xl mx-auto text-2xl pb-10">
           Explore our wide collection of fragrances. Find something that suits your style and personality.
         </p>
-        <div className="scroll-pl-6 grid grid-flow-col auto-cols-max snap-x overflow-x-auto mt-20 pb-10">
-          <div className="snap-start mx-4">
-          <img
-              src="bleu de chanel.png"
-              className="rounded-lg h-80 w-70"
-            />
-          </div>
-          <div className="snap-start mx-4">
-            <img
-              src="bleu de chanel.png"
-              className="rounded-lg h-80 w-70"
-            />
-          </div>
-          <div className="snap-start mx-4">
-            <img
-              src="bleu de chanel.png"
-              className="rounded-lg h-80 w-70"
-            />
-          </div>
-          <div className="snap-start mx-4">
-            <img
-              src="bleu de chanel.png"
-              className="rounded-lg h-80 w-70"
-            />
-          </div>
-          <div className="snap-start mx-4">
-            <img
-              src="bleu de chanel.png"
-              className="rounded-lg h-80 w-70"
-            />
-          </div>
-          <div className="snap-start mx-4">
-            <img
-              src="bleu de chanel.png"
-              className="rounded-lg h-80 w-70"
-            />
-          </div>
-          {/* Additional images */}
-        </div>
+        <InfiniteScrollFragrances />
       </div>
 
       {/* Section 3: Additional Content */}
