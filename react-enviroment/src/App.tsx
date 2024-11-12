@@ -1,17 +1,19 @@
 // src/App.tsx
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Navbar from './components/Navbar';
 import 'bootstrap';
-import Home from './pages/Home';
-import Fragrances from './pages/Fragrances';
-import Brands from './pages/Brands';
-import Notes from './pages/Notes';
-import About from './pages/About';
-import TestPage from './pages/TestPage';
-import FragrancePage from './pages/FragrancePage';
-import YourListsPage from './pages/YourListsPage';
+import React from 'react';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import ChatbotIcon from './components/ChatbotIcon';
+import ChatbotWindow from './components/ChatbotWindow';
+import Navbar from './components/Navbar';
 import { AuthProvider } from './contexts/authContext/AuthProvider';
+import About from './pages/About';
+import Brands from './pages/Brands';
+import FragrancePage from './pages/FragrancePage';
+import Fragrances from './pages/Fragrances';
+import Home from './pages/Home';
+import Notes from './pages/Notes';
+import TestPage from './pages/TestPage';
+import YourListsPage from './pages/YourListsPage';
 
 function App() {
   return (
@@ -32,5 +34,18 @@ function App() {
     </AuthProvider>
   );
 }
+const App: React.FC = () => {
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
+  const openChat = () => setIsChatOpen(true);
+  const closeChat = () => setIsChatOpen(false);
+
+  return (
+    <div>
+      {/* Other components for your website */}
+      <ChatbotIcon onClick={openChat} />
+      {isChatOpen && <ChatbotWindow onClose={closeChat} />}
+    </div>
+  );
+};
 export default App;
