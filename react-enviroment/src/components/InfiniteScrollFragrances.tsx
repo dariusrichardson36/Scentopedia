@@ -20,7 +20,11 @@ const InfiniteScrollFragrances: React.FC = () => {
     <div className="scroll-container mt-20 pb-10">
       <div className="scroll-content">
         {randomFragrances.concat(randomFragrances).map((fragrance: FragranceData, index) => (
-          <div key={index} className="snap-start mx-4">
+          <div
+            key={index}
+            className="snap-start mx-4 card-wrapper"
+            style={{ height: '28rem', width: '18rem', display: 'flex', alignItems: 'stretch' }}
+          >
             <FragranceCard fragrance={fragrance} />
           </div>
         ))}

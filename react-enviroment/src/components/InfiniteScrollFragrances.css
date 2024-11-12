@@ -37,4 +37,10 @@
   .pb-10 {
     padding-bottom: 2.5rem;
   }
-  
+
+  .card-title,
+  .brand-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
