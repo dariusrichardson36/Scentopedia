@@ -1,6 +1,7 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
 import React, { useEffect, useRef, useState } from 'react';
 import { db } from '../firebaseConfig';
+import './ChatbotWindow.css';
 
 // Type declarations
 type ChatbotWindowProps = {
@@ -206,14 +207,14 @@ const ChatbotWindow: React.FC<ChatbotWindowProps> = ({ onClose }) => {
   }, []);
 
   return (
-    <div style={{ position: 'fixed', bottom: '80px', right: '20px', width: '320px', height: '420px', backgroundColor: '#fff', borderRadius: '8px', boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.2)', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ padding: '10px', borderBottom: '1px solid #ddd', textAlign: 'right' }}>
+    <div className="chatbot-window">
+      <div className="chatbot-header">
         <button onClick={onClose}>X</button>
       </div>
-      <div style={{ flex: 1, padding: '10px', overflowY: 'auto' }}>
+      <div className="chatbot-messages">
         {messages.map((msg, index) => (
-          <div key={index} style={{ marginBottom: '10px', display: 'flex', justifyContent: msg.sender === 'user' ? 'flex-end' : 'flex-start', textAlign: msg.type === 'options' ? 'center' : 'left', width: msg.type === 'options' ? '100%' : 'auto' }}>
-            <div style={{ color: '#ffffff', backgroundColor: msg.sender === 'user' ? '#4caf50' : '#2196f3', padding: '8px 12px', borderRadius: '10px', maxWidth: '75%', wordWrap: 'break-word', textAlign: msg.type === 'options' ? 'center' : 'left' }}>
+          <div key={index} className={`message-bubble ${msg.sender === 'user' ? 'message-user' : 'message-bot'}`}>
+            <div className={`message-text ${msg.type === 'options' ? 'options-message' : ''}`}>
               {msg.type === 'options' && currentDirectory === 'main' ? (
                 <div>
                   <p>{msg.text}</p>
@@ -236,18 +237,24 @@ const ChatbotWindow: React.FC<ChatbotWindowProps> = ({ onClose }) => {
                   <button onClick={() => handleConfirmationClick("No")}>No</button>
                 </div>
               ) : (
-                <p style={{ textAlign: 'left', margin: 0 }}>{msg.text}</p>
+                <p>{msg.text}</p>
               )}
             </div>
           </div>
         ))}
       </div>
-      <div style={{ padding: '10px', borderTop: '1px solid #ddd', display: 'flex' }}>
-        <input type="text" placeholder="Type a message..." style={{ flex: 1, padding: '8px' }} value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') sendMessage(); }} />
-        <button onClick={sendMessage} style={{ marginLeft: '5px', padding: '8px' }}>Send</button>
+      <div className="chatbot-input">
+        <input
+          type="text"
+          placeholder="Type a message..."
+          className="chatbot-input-field"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => { if (e.key === 'Enter') sendMessage(); }}
+        />
+        <button onClick={sendMessage} className="chatbot-send-button">Send</button>
       </div>
     </div>
-  );
-};
+)};
 
 export default ChatbotWindow;

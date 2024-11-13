@@ -1,9 +1,7 @@
 // src/App.tsx
 import 'bootstrap';
-import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import ChatbotIcon from './components/ChatbotIcon';
-import ChatbotWindow from './components/ChatbotWindow';
+import ChatApp from './ChatApp';
 import Navbar from './components/Navbar';
 import { AuthProvider } from './contexts/authContext/AuthProvider';
 import About from './pages/About';
@@ -31,21 +29,9 @@ function App() {
           <Route path="/fragrance/:id" element={<FragrancePage />} />
         </Routes>
       </Router>
+      <ChatApp />
     </AuthProvider>
   );
 }
-const App: React.FC = () => {
-  const [isChatOpen, setIsChatOpen] = useState(false);
 
-  const openChat = () => setIsChatOpen(true);
-  const closeChat = () => setIsChatOpen(false);
-
-  return (
-    <div>
-      {/* Other components for your website */}
-      <ChatbotIcon onClick={openChat} />
-      {isChatOpen && <ChatbotWindow onClose={closeChat} />}
-    </div>
-  );
-};
 export default App;
