@@ -1,17 +1,17 @@
 // src/App.tsx
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Navbar from './components/Navbar';
 import 'bootstrap';
-import Home from './pages/Home';
-import Fragrances from './pages/Fragrances';
-import Brands from './pages/Brands';
-import Notes from './pages/Notes';
-import About from './pages/About';
-import TestPage from './pages/TestPage';
-import FragrancePage from './pages/FragrancePage';
-import YourListsPage from './pages/YourListsPage';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import ChatApp from './ChatApp';
+import Navbar from './components/Navbar';
 import { AuthProvider } from './contexts/authContext/AuthProvider';
+import About from './pages/About';
+import Brands from './pages/Brands';
+import FragrancePage from './pages/FragrancePage';
+import Fragrances from './pages/Fragrances';
+import Home from './pages/Home';
+import Notes from './pages/Notes';
+import TestPage from './pages/TestPage';
+import YourListsPage from './pages/YourListsPage';
 
 function App() {
   return (
@@ -29,6 +29,7 @@ function App() {
           <Route path="/fragrance/:id" element={<FragrancePage />} />
         </Routes>
       </Router>
+      <ChatApp />
     </AuthProvider>
   );
 }
