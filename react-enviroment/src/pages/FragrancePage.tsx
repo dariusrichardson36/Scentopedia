@@ -1,4 +1,5 @@
 // src/pages/FragrancePage.tsx
+
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../contexts/authContext/AuthProvider';
@@ -7,20 +8,22 @@ import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 import useFragrances from '../hooks/useFragrances';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Checkbox, FormControlLabel, CircularProgress } from '@mui/material';
 
+// FragrancePage Component
+// This component renders detailed information about a specific fragrance and allows users to add it to their wishlists or favorites.
 const FragrancePage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const { fragrances } = useFragrances();
-  const { user } = useAuth();
-  const [loading, setLoading] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [wishlists, setWishlists] = useState<{ [key: string]: string[] }>({});
-  const [selectedWishlists, setSelectedWishlists] = useState<{ [key: string]: boolean }>({});
+  const { id } = useParams<{ id: string }>(); // Get fragrance ID from URL params.
+  const { fragrances } = useFragrances(); // Get all fragrances using the custom hook.
+  const { user } = useAuth(); // Get user information from authentication context.
+  const [loading, setLoading] = useState(false); // State for managing loading state when updating wishlists.
+  const [modalOpen, setModalOpen] = useState(false); // State for modal visibility.
+  const [wishlists, setWishlists] = useState<{ [key: string]: string[] }>({}); // State to store user's wishlists.
+  const [selectedWishlists, setSelectedWishlists] = useState<{ [key: string]: boolean }>({}); // State for selected wishlists.
 
-  // Find fragrance by document ID
+  // Find fragrance by document ID.
   const fragrance = fragrances.find((f) => f.fragranceName === id);
 
+  // Fetch user's wishlists from Firestore.
   useEffect(() => {
-    // Fetch user's wishlists from Firestore
     const fetchWishlists = async () => {
       if (user) {
         const userDocRef = doc(db, 'users', user.email);
@@ -39,14 +42,14 @@ const FragrancePage: React.FC = () => {
     return <p>Fragrance not found</p>;
   }
 
-  // Toggle modal
+  // Toggle modal visibility.
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => {
     setModalOpen(false);
-    setSelectedWishlists({}); // Clear selection on close
+    setSelectedWishlists({}); // Clear selection on close.
   };
 
-  // Handle checkbox changes
+  // Handle changes in wishlist checkboxes.
   const handleCheckboxChange = (wishlistName: string) => {
     setSelectedWishlists((prev) => ({
       ...prev,
@@ -54,7 +57,7 @@ const FragrancePage: React.FC = () => {
     }));
   };
 
-  // Add to selected wishlists
+  // Add fragrance to selected wishlists.
   const addToWishlists = async () => {
     if (!user || !id) return;
     setLoading(true);
@@ -62,7 +65,7 @@ const FragrancePage: React.FC = () => {
     const userDocRef = doc(db, 'users', user.email);
 
     try {
-      // Update each selected wishlist
+      // Update each selected wishlist.
       for (const wishlistName in selectedWishlists) {
         if (selectedWishlists[wishlistName]) {
           await updateDoc(userDocRef, {
@@ -85,7 +88,7 @@ const FragrancePage: React.FC = () => {
       <p>{fragrance.description}</p>
       <img src={fragrance.image} alt={fragrance.fragranceName} />
 
-      {/* Add to Favorites Button */}
+      {/* Add to Favorites and Wishlist Buttons */}
       {user && (
         <>
           <Button
@@ -155,3 +158,13 @@ const FragrancePage: React.FC = () => {
 };
 
 export default FragrancePage;
+
+/*
+Documentation Summary:
+- `FragrancePage` is a React functional component that displays detailed information about a specific fragrance.
+- It allows authenticated users to add the fragrance to their wishlists or mark it as a favorite.
+- The component uses the `useParams` hook to get the fragrance ID from the URL and `useAuth` to get the current user.
+- It also uses `useFragrances` to retrieve fragrance data and interacts with Firestore to update user-specific data.
+- Key features include a modal dialog for selecting wishlists and buttons for adding fragrances to wishlists or favorites.
+- Loading states and error handling are implemented to provide feedback during async operations.
+*/

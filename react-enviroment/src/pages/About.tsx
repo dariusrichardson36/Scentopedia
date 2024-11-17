@@ -1,6 +1,10 @@
+// src/pages/About.tsx
+
 import React from 'react';
 import './About.css';
 
+// About Component
+// This component renders information about Scentopedia, including its origins and purpose.
 const About: React.FC = () => {
     return (
         <div className="about-container">
@@ -13,3 +17,10 @@ const About: React.FC = () => {
 };
 
 export default About;
+
+/*
+Documentation Summary:
+- `About` is a React functional component that renders the "About Scentopedia" section.
+- It includes a heading and a paragraph of text that introduces users to the Scentopedia platform.
+- The component uses styles defined in the `About.css` file to style its content.
+*/
