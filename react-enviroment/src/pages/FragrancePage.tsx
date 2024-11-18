@@ -82,8 +82,9 @@ const FragrancePage: React.FC = () => {
   return (
     <div className="container mt-5">
       <h2 className="text-3xl font-title">{fragrance.fragranceName}</h2>
-      <p>{fragrance.description}</p>
+      
       <img src={fragrance.image} alt={fragrance.fragranceName} />
+      <p>{fragrance.description}</p>
 
       {/* Add to Favorites Button */}
       {user && (
