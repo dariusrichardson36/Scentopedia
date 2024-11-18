@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import useFragrances from '../hooks/useFragrances';
-import { FragranceData } from '../types/types';
+import { FragranceData } from '../types/FragranceTypes';
 import Fuse from 'fuse.js';
 
 // Define the props type for the NavSearchBar component.

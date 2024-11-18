@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import FragranceCard from './FragranceCard';
 import useFragrances from '../hooks/useFragrances';
-import { FragranceData } from '../types/types';
+import { FragranceData } from '../types/FragranceTypes';
 import './InfiniteScrollFragrances.css';
 
 // InfiniteScrollFragrances Component

@@ -4,7 +4,7 @@ import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import FragranceCard from './FragranceCard';
 import useFragrances from '../hooks/useFragrances';
-import { FilterCriteria, FragranceData } from '../types/types';
+import { FilterCriteria, FragranceData } from '../types/FragranceTypes';
 
 // Define the props type for the FragranceGrid component.
 // - filterCriteria: The criteria used to filter fragrances (e.g., brand, perfumer, notes, accords).

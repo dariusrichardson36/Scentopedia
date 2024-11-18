@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../lib/firebase';
-import { FragranceData } from '../types/types';
+import { FragranceData } from '../types/FragranceTypes';
 
 // Hook to fetch fragrance data from Firestore
 // This hook provides an easy way to fetch the fragrance data from the Firestore database.

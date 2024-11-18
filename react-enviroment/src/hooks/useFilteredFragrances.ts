@@ -1,7 +1,7 @@
 // src/hooks/useFilteredFragrances.ts
 
 import { useMemo } from 'react';
-import { FilterCriteria, FragranceData } from '../types/types';
+import { FilterCriteria, FragranceData } from '../types/FragranceTypes';
 
 // Hook to filter fragrance data based on user criteria and name query.
 // This hook provides a memoized list of filtered fragrances based on the provided filter criteria and search query.

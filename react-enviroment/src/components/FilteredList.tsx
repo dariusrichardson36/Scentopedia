@@ -4,7 +4,7 @@ import React, { useState, useMemo } from 'react';
 import { Accordion, ListGroup, Form, InputGroup, FormControl } from 'react-bootstrap';
 import Fuse from 'fuse.js';
 import useFragrances from '../hooks/useFragrances';
-import { FilterCriteria } from '../types/types';
+import { FilterCriteria } from '../types/FragranceTypes';
 
 // FilterSection Component
 // This component is a memoized React functional component that represents each filterable section within the FilteredList component.

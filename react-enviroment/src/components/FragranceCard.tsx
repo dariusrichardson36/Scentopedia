@@ -3,7 +3,7 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { FragranceData } from '../types/types';
+import { FragranceData } from '../types/FragranceTypes';
 
 // Define the props type for the FragranceCard component.
 // - fragrance: Contains the data for a specific fragrance.
