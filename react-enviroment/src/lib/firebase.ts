@@ -3,7 +3,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, Auth } from 'firebase/auth';
 import { getFirestore, Firestore } from 'firebase/firestore';
-import { getStorage, FirebaseStorage } from 'firebase/storage';
 
 // Firebase configuration object containing API keys and project identifiers.
 const firebaseConfig = {
@@ -21,7 +20,6 @@ const app = initializeApp(firebaseConfig);
 // Initialize Firebase services: Authentication, Firestore Database, and Storage.
 export const auth: Auth = getAuth(app);
 export const db: Firestore = getFirestore(app);
-export const storage: FirebaseStorage = getStorage(app);
 
 /*
 Documentation Summary:

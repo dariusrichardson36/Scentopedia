@@ -1,7 +1,7 @@
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { Loader2 } from 'lucide-react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { db } from '../firebaseConfig';
+import { db } from '../lib/firebase';
 import './ChatbotWindow.css';
 
 // Types and Interfaces
