@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import FilteredList from '../components/FilteredList';
 import FragranceGrid from '../components/FragranceGrid';
 import PaginationControls from '../components/PaginationControls';
-import { FilterCriteria } from '../types/types';
+import { FilterCriteria } from '../types/FragranceTypes';
 import useFragrances from '../hooks/useFragrances';
 import useFilteredFragrances from '../hooks/useFilteredFragrances';
 

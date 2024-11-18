@@ -1,20 +1,24 @@
 // src/pages/YourListsPage.tsx
+
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/authContext/AuthProvider';
 import { db } from '../lib/firebase';
 import { doc, getDoc, updateDoc, arrayRemove, setDoc, serverTimestamp } from 'firebase/firestore';
 
+// Interface for Wishlist data
 interface Wishlist {
   [key: string]: string[]; // Each wishlist is an array of fragrance IDs
 }
 
+// YourListsPage Component
+// This component allows authenticated users to manage their lists of fragrances, including favorites and custom wishlists.
 const YourListsPage: React.FC = () => {
-  const { user } = useAuth();
-  const [favorites, setFavorites] = useState<string[]>([]);
-  const [wishlists, setWishlists] = useState<Wishlist>({});
-  const [newWishlistName, setNewWishlistName] = useState('');
+  const { user } = useAuth(); // Get current user from authentication context.
+  const [favorites, setFavorites] = useState<string[]>([]); // State to store user's favorite fragrances.
+  const [wishlists, setWishlists] = useState<Wishlist>({}); // State to store user's wishlists.
+  const [newWishlistName, setNewWishlistName] = useState(''); // State for new wishlist name.
 
-  // Fetch user's lists from Firestore
+  // Fetch user's lists from Firestore when component mounts or when user changes.
   useEffect(() => {
     if (user) {
       const fetchUserData = async () => {
@@ -31,18 +35,18 @@ const YourListsPage: React.FC = () => {
     }
   }, [user]);
 
-  // Add a new wishlist
+  // Add a new wishlist to Firestore.
   const addWishlist = async () => {
     if (!user || !newWishlistName.trim()) return;
     
     const userDocRef = doc(db, 'users', user.email);
 
     try {
-      // Check if the document exists
+      // Check if the document exists.
       const userDoc = await getDoc(userDocRef);
 
       if (!userDoc.exists()) {
-        // If the document doesn't exist, initialize it with the basic structure and new wishlist
+        // If the document doesn't exist, initialize it with the basic structure and new wishlist.
         await setDoc(userDocRef, {
           email: user.email,
           username: user.displayName || 'Anonymous',
@@ -70,7 +74,7 @@ const YourListsPage: React.FC = () => {
     }
   };
 
-  // Remove fragrance from Favorites
+  // Remove fragrance from Favorites.
   const removeFromFavorites = async (fragranceId: string) => {
     if (!user) return;
 
@@ -81,7 +85,7 @@ const YourListsPage: React.FC = () => {
     setFavorites(favorites.filter(id => id !== fragranceId));
   };
 
-  // Remove fragrance from a wishlist
+  // Remove fragrance from a wishlist.
   const removeFromWishlist = async (wishlistName: string, fragranceId: string) => {
     if (!user) return;
 
@@ -169,3 +173,11 @@ const YourListsPage: React.FC = () => {
 };
 
 export default YourListsPage;
+
+/*
+Documentation Summary:
+- `YourListsPage` is a React functional component that allows users to manage their fragrance lists.
+- The component provides functionality to view and remove fragrances from the "Favorites" list and custom wishlists.
+- Users can also create new wishlists, which are added to Firestore.
+- The component interacts with Firestore for CRUD operations on user's lists, including adding and removing fragrances.
+*/
