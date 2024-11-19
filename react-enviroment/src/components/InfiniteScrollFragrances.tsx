@@ -22,7 +22,7 @@ const InfiniteScrollFragrances: React.FC = () => {
   }, [fragrances]);
 
   return (
-    <div className="scroll-container mt-20 pb-10">
+    <div className="scroll-container mt-10 pb-10">
       <div className="scroll-content">
         {/* Render each fragrance twice to create an infinite scrolling effect */}
         {randomFragrances.concat(randomFragrances).map((fragrance: FragranceData, index) => (

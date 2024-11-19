@@ -32,17 +32,17 @@ const Home: React.FC = () => {
 
       {/* Section 2: New Background with Content and Fragrance Cards Scrolling */}
       <div className="w-full min-h-screen bg-gray-100 pt-20">
-        <h2 className="text-black font-title text-center text-5xl py-20">
+        <h2 className="text-black font-title text-center text-5xl py-10">
           Discover More Fragrances
         </h2>
-        <p className="text-black text-center font-body max-w-3xl mx-auto text-2xl pb-10">
+        <p className="text-black text-center font-body max-w-3xl mx-auto text-2xl ">
           Explore our wide collection of fragrances. Find something that suits your style and personality.
         </p>
         <InfiniteScrollFragrances />
       </div>
 
       {/* Section 3: Additional Content */}
-      <div className="w-full min-h-screen bg-black pt-20">
+      <div className="w-full min-h-screen bg-black">
         <h2 className="text-white text-center font-title text-5xl py-20">
           Join the Scentopedia Community
         </h2>
