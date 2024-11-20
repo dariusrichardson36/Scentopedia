@@ -28,7 +28,6 @@ function App() {
           <Route path="/notes" element={<Notes />} />
           <Route path="/about" element={<About />} />
           <Route path="/your-lists" element={<YourListsPage />} />
-          <Route path="/testpage" element={<TestPage />} />
           <Route path="/fragrance/:id" element={<FragrancePage />} />
         </Routes>
       </Router>
