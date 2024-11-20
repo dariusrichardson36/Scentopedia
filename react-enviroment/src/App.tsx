@@ -11,7 +11,6 @@ import FragrancePage from './pages/FragrancePage';
 import Fragrances from './pages/Fragrances';
 import Home from './pages/Home';
 import Notes from './pages/Notes';
-import TestPage from './pages/TestPage';
 import YourListsPage from './pages/YourListsPage';
 
 // App Component
