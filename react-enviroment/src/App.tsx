@@ -39,8 +39,15 @@ function App() {
               <ProtectedRoute>
                 <YourListsPage />
               </ProtectedRoute>
-            }
-          />
+          }/>
+
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <UserProfilePage />
+              </ProtectedRoute>
+          }/>
 
         </Routes>
       </Router>
