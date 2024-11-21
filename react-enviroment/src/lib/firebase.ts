@@ -1,8 +1,9 @@
-// src/lib/firebase.ts
+// firebase.ts
 
 import { initializeApp } from 'firebase/app';
-import { getAuth, Auth } from 'firebase/auth';
-import { getFirestore, Firestore } from 'firebase/firestore';
+import { Auth, getAuth } from 'firebase/auth';
+import { Firestore, getFirestore } from 'firebase/firestore';
+import { FirebaseStorage, getStorage } from 'firebase/storage';
 
 // Firebase configuration object containing API keys and project identifiers.
 const firebaseConfig = {
@@ -14,12 +15,16 @@ const firebaseConfig = {
     appId: "1:295858152820:web:70c7f452941191264cf821"
 };
 
-// Initialize Firebase app using the provided configuration.
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Firebase services: Authentication, Firestore Database, and Storage.
+// Initialize Firebase services
 export const auth: Auth = getAuth(app);
 export const db: Firestore = getFirestore(app);
+export const storage: FirebaseStorage = getStorage(app);
+
+// Default export for db if needed
+export default db;
 
 /*
 Documentation Summary:

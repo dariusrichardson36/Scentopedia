@@ -21,16 +21,18 @@ interface Fragrance {
     }
 }
 
-type MessageOptions = 
-    | "Fragrance Information"
-    | "Fragrance Finder"
-    | "Recommend Fragrances"
-    | "Brand"
-    | "Notes"
-    | "Accords"
-    | "Description"
-    | "Yes"
-    | "No";
+type FragranceInfoOption = 'Brand' | 'Notes' | 'Accords' | 'Description';
+type MainMenuOption = 'Fragrance Information' | 'Recommend Fragrances';
+type ResponseOption = 'Yes' | 'No';
+
+type MessageOptions = MainMenuOption | FragranceInfoOption | ResponseOption;
+
+interface RecommendationState {
+    category: 'notes' | 'accords' | 'brand' | null;
+    preferences: string[];
+    currentPage: number;
+    recommendations: Fragrance[];
+}
 
 interface ChatMessage {
     id: string;
@@ -55,8 +57,7 @@ class ChatbotError extends Error {
         this.name = 'ChatbotError';
     }
 }
-
-// Helper Components
+// Helper Components 
 const TypingIndicator: React.FC = () => (
     <div className="typing-indicator">
         {[1, 2, 3].map((dot) => (
@@ -74,7 +75,7 @@ const ProgressBar: React.FC<{ progress: number }> = ({ progress }) => (
     </div>
 );
 
-// Utility Functions
+// Soundex utility function
 const soundex = (str: string): string => {
     if (!str) return '';
     const a = str.toLowerCase().split('');
@@ -96,8 +97,8 @@ const soundex = (str: string): string => {
         .padEnd(4, '0')
         .toUpperCase();
 };
-
 const ChatbotWindow: React.FC = () => {
+    // State declarations
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [currentInput, setCurrentInput] = useState('');
     const [selectedFragrance, setSelectedFragrance] = useState('');
@@ -107,6 +108,14 @@ const ChatbotWindow: React.FC = () => {
     const [progress, setProgress] = useState(0);
     const [isInitializing, setIsInitializing] = useState(true);
     const [lastOptionsTimestamp, setLastOptionsTimestamp] = useState<number>(0);
+    const [recommendationState, setRecommendationState] = useState<RecommendationState>({
+        category: null,
+        preferences: [],
+        currentPage: 0,
+        recommendations: []
+    });
+    const [awaitingPreferences, setAwaitingPreferences] = useState(false);
+    
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const scrollToBottom = useCallback(() => {
@@ -130,6 +139,7 @@ const ChatbotWindow: React.FC = () => {
         }
     }, []);
 
+    // Initialize chat
     useEffect(() => {
         let isMounted = true;
 
@@ -161,7 +171,7 @@ const ChatbotWindow: React.FC = () => {
                 addMessage({
                     text: "Please select an option:",
                     sender: 'bot',
-                    options: ["Fragrance Information", "Fragrance Finder", "Recommend Fragrances"]
+                    options: ["Fragrance Information", "Recommend Fragrances"]
                 });
             } finally {
                 if (isMounted) {
@@ -177,7 +187,7 @@ const ChatbotWindow: React.FC = () => {
             isMounted = false;
         };
     }, [addMessage, isInitializing]);
-
+    // Database and recommendation functions
     const handleDatabaseQuery = async (operation: () => Promise<any>, retryCount = 0): Promise<any> => {
         try {
             if (!navigator.onLine) {
@@ -222,6 +232,249 @@ const ChatbotWindow: React.FC = () => {
         }
     };
 
+    const validateAndProcessPreferences = (input: string): string[] => {
+        const preferences = input
+            .split(',')
+            .map(pref => pref.trim())
+            .filter(pref => pref.length > 0);
+            console.log('Processed preferences:', preferences);
+
+        if (recommendationState.category === 'brand' && preferences.length > 1) {
+            throw new ChatbotError(
+                ErrorType.VALIDATION, 
+                "Please enter only one brand name. Which brand would you like recommendations for?"
+            );
+        }
+
+        if ((recommendationState.category === 'notes' || recommendationState.category === 'accords') 
+            && preferences.length > 5) {
+            throw new ChatbotError(
+                ErrorType.VALIDATION, 
+                `Please enter no more than 5 ${recommendationState.category}. Which would you like to use?`
+            );
+        }
+
+        return preferences;
+    };
+
+    const fetchRecommendations = async (preferences: string[]): Promise<Fragrance[]> => {
+        try {
+            const fragrancesRef = collection(db, 'Fragrance');
+            let querySnapshot;
+    
+            if (!recommendationState.category) return [];
+    
+            switch (recommendationState.category) {
+                case 'notes':
+                    querySnapshot = await getDocs(fragrancesRef);
+                    const normalizedPreferences = preferences.map(pref => 
+                        pref.toLowerCase().trim()
+                    );
+                    
+                    const noteResults = querySnapshot.docs
+                        .map(doc => {
+                            const data = doc.data() as Fragrance;
+                            if (!data.combNotes || !Array.isArray(data.combNotes)) {
+                                console.warn(`Invalid combNotes for fragrance: ${data.fragranceName}`);
+                                return null;
+                            }
+                            return data;
+                        })
+                        .filter((fragrance): fragrance is Fragrance => {
+                            if (!fragrance) return false;
+    
+                            const normalizedFragranceNotes = fragrance.combNotes.map(note => 
+                                note.replace(/^"(.+)"$/, '$1').toLowerCase().trim()
+                            );
+    
+                            console.log(`Checking ${fragrance.fragranceName}:`, {
+                                normalizedNotes: normalizedFragranceNotes,
+                                preferences: normalizedPreferences
+                            });
+    
+                            // Return true if ANY of the preferred notes match
+                            const hasMatch = normalizedPreferences.some(pref => 
+                                normalizedFragranceNotes.includes(pref)
+                            );
+    
+                            if (hasMatch) {
+                                const matches = normalizedPreferences.filter(pref => 
+                                    normalizedFragranceNotes.includes(pref)
+                                );
+                                console.log(`Found matches for ${fragrance.fragranceName}:`, matches);
+                            }
+    
+                            return hasMatch;
+                        });
+    
+                    console.log('Final results:', {
+                        totalFound: noteResults.length,
+                        preferences: normalizedPreferences
+                    });
+    
+                    return noteResults;
+    
+                case 'accords':
+                    querySnapshot = await getDocs(fragrancesRef);
+                    const accordResults = querySnapshot.docs
+                        .map(doc => doc.data() as Fragrance)
+                        .filter(fragrance => 
+                            preferences.some(preferredAccord => {
+                                const normalizedPreferredAccord = preferredAccord.toLowerCase().trim();
+                                return fragrance.accords.some(fragranceAccord => 
+                                    fragranceAccord.toLowerCase().trim().includes(normalizedPreferredAccord)
+                                );
+                            })
+                        );
+                    console.log(`Found ${accordResults.length} matches for accords:`, preferences);
+                    return accordResults;
+    
+                case 'brand':
+                    const brandQuery = query(
+                        fragrancesRef, 
+                        where('brandName', '==', preferences[0])
+                    );
+                    querySnapshot = await getDocs(brandQuery);
+                    const brandResults = querySnapshot.docs.map(doc => doc.data() as Fragrance);
+                    console.log(`Found ${brandResults.length} matches for brand:`, preferences[0]);
+                    return brandResults;
+    
+                default:
+                    return [];
+            }
+        } catch (error) {
+            console.error('Error in fetchRecommendations:', error);
+            throw new ChatbotError(
+                ErrorType.DATABASE,
+                'There was an error searching the fragrance database. Please try again.'
+            );
+        }
+    };
+
+    const displayRecommendations = async (
+        recommendations: Fragrance[], 
+        page: number = 0,
+        preferences: string[]
+    ) => {
+        const pageSize = 5;
+        const start = page * pageSize;
+        const end = start + pageSize;
+        const currentPageRecommendations = recommendations.slice(start, end);
+        
+        if (currentPageRecommendations.length === 0) {
+            addMessage({
+                text: "There are no more recommendations at this time.",
+                sender: 'bot'
+            });
+            await askIfAnythingElse();
+            return;
+        }
+    
+        let recommendationText = `Here are your recommended fragrances based on your preferred ${recommendationState.category}:\n\n`;
+        
+        currentPageRecommendations.forEach((fragrance, index) => {
+            // Clean and normalize fragrance notes
+            const normalizedFragranceNotes = fragrance.combNotes.map(note => 
+                note.replace(/^"(.+)"$/, '$1').toLowerCase().trim()
+            );
+            
+            // Clean and normalize preferences
+            const normalizedPreferences = preferences.map(pref => 
+                pref.toLowerCase().trim()
+            );
+    
+            // Find matching notes for this fragrance
+            const matchingNotes = normalizedPreferences.filter(pref => 
+                normalizedFragranceNotes.includes(pref)
+            );
+    
+            // Format the matching notes string
+            let matchingNotesString = '';
+            if (matchingNotes.length === 1) {
+                matchingNotesString = matchingNotes[0];
+            } else if (matchingNotes.length === 2) {
+                matchingNotesString = `${matchingNotes[0]} and ${matchingNotes[1]}`;
+            } else if (matchingNotes.length > 2) {
+                matchingNotesString = matchingNotes.join(', ');
+            }
+    
+            // Add to recommendation text
+            recommendationText += `${index + 1}. ${fragrance.fragranceName} by ${fragrance.brandName}\n`;
+            recommendationText += `   (Contains your preferred note(s): ${matchingNotesString})\n\n`;
+        });
+    
+        addMessage({
+            text: recommendationText,
+            sender: 'bot'
+        });
+    
+        if (end < recommendations.length) {
+            addMessage({
+                text: "Would you like to see more recommendations?",
+                sender: 'bot',
+                options: ['Yes', 'No']
+            });
+        } else {
+            addMessage({
+                text: "There are no more recommendations at this time.",
+                sender: 'bot'
+            });
+            await askIfAnythingElse();
+        }
+    };
+
+    const handlePreferencesInput = async (input: string) => {
+        setLoading(true);
+        setIsTyping(true);
+    
+        try {
+            const preferences = validateAndProcessPreferences(input);
+            console.log('Initial preferences:', preferences);
+            
+            addMessage({
+                text: input,
+                sender: 'user'
+            });
+    
+            // Store preferences in state
+            await setRecommendationState(prev => ({
+                ...prev,
+                preferences,
+                currentPage: 0
+            }));
+    
+            const recommendations = await handleDatabaseQuery(() => 
+                fetchRecommendations(preferences)
+            );
+    
+            if (!recommendations || recommendations.length === 0) {
+                addMessage({
+                    text: `I couldn't find any fragrances containing "${input}". Would you like to try with different ${recommendationState.category}?`,
+                    sender: 'bot',
+                    options: ['Yes', 'No']
+                });
+                return;
+            }
+    
+            // Pass both recommendations and preferences to displayRecommendations
+            await displayRecommendations(recommendations, 0, preferences);
+            setAwaitingPreferences(false);
+    
+        } catch (err) {
+            console.error('Error processing preferences:', err);
+            if (err instanceof ChatbotError) {
+                addMessage({
+                    text: err.message,
+                    sender: 'bot'
+                });
+            }
+        } finally {
+            setLoading(false);
+            setIsTyping(false);
+            setCurrentInput('');
+        }
+    };    
+
     const findSimilarFragrances = async (searchName: string): Promise<Fragrance[]> => {
         try {
             const fragrancesRef = collection(db, 'Fragrance');
@@ -263,6 +516,8 @@ const ChatbotWindow: React.FC = () => {
             if (!result.empty) {
                 const fragranceData = result.docs[0].data() as Fragrance;
                 setSelectedFragrance(fragranceData.fragranceName);
+                // Wait for state to update
+                await new Promise(resolve => setTimeout(resolve, 100));
                 addMessage({
                     text: `Please choose what information you would like to know about ${fragranceData.fragranceName}.`,
                     sender: 'bot',
@@ -288,7 +543,7 @@ const ChatbotWindow: React.FC = () => {
         } catch (err) {
             if (err instanceof ChatbotError) {
                 addMessage({
-                    text: `Error: ${err.message}`,
+                    text: err.message,
                     sender: 'bot'
                 });
             }
@@ -298,19 +553,17 @@ const ChatbotWindow: React.FC = () => {
             setCurrentInput('');
         }
     };
-
+    
     const askIfAnythingElse = async () => {
-        setIsTyping(true);
         await new Promise(resolve => setTimeout(resolve, 1000));
         addMessage({
             text: "Is there anything else I can help you with?",
             sender: 'bot',
-            options: ["Yes", "No"]
+            options: ['Yes', 'No']
         });
-        setIsTyping(false);
-    };
+    };    
     
-    const handleGetFragranceInfo = async (option: MessageOptions) => {
+    const handleGetFragranceInfo = async (option: FragranceInfoOption) => {
         setLoading(true);
         setIsTyping(true);
 
@@ -358,12 +611,20 @@ const ChatbotWindow: React.FC = () => {
             setIsTyping(false);
         }
     };
-
     const handleOptionClick = async (option: MessageOptions) => {
         addMessage({ text: option, sender: 'user' });
-
+    
         switch (option) {
             case 'Fragrance Information':
+                // Reset all states to ensure clean flow
+                setAwaitingPreferences(false);
+                setRecommendationState({
+                    category: null,
+                    preferences: [],
+                    currentPage: 0,
+                    recommendations: []
+                });
+                
                 setAwaitingFragranceName(true);
                 setIsTyping(true);
                 await new Promise(resolve => setTimeout(resolve, 1000));
@@ -373,28 +634,107 @@ const ChatbotWindow: React.FC = () => {
                 });
                 setIsTyping(false);
                 break;
-
-            case 'Brand':
-            case 'Notes':
-            case 'Accords':
-            case 'Description':
-                await handleGetFragranceInfo(option);
-                break;
-
-            case 'Yes':
+    
+            case 'Recommend Fragrances':
                 setIsTyping(true);
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 addMessage({
-                    text: "Please select an option:",
+                    text: "Please choose a category to base recommendations on:",
                     sender: 'bot',
-                    options: ["Fragrance Information", "Fragrance Finder", "Recommend Fragrances"]
+                    options: ["Notes", "Accords", "Brand"]
                 });
                 setIsTyping(false);
                 break;
+    
+            case 'Notes':
+            case 'Accords':
+            case 'Brand':
+                // Check which flow we're in
+                if (selectedFragrance) {
+                    // We're in the Fragrance Information flow
+                    await handleGetFragranceInfo(option as FragranceInfoOption);
+                } else {
+                    // We're in the Recommend Fragrances flow
+                    setIsTyping(true);
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    
+                    setRecommendationState(prev => ({ 
+                        ...prev, 
+                        category: option.toLowerCase() as 'notes' | 'accords' | 'brand' 
+                    }));
+                    setAwaitingPreferences(true);
+    
+                    const promptText = option === 'Brand'
+                        ? "Please enter one brand name to get recommendations."
+                        : `Please enter your preferred ${option.toLowerCase()} (you can enter up to 5 ${option.toLowerCase()}, separated by commas).`;
+                    
+                    addMessage({
+                        text: promptText,
+                        sender: 'bot'
+                    });
+                    setIsTyping(false);
+                }
+                break;
+    
+            case 'Description':
+                await handleGetFragranceInfo(option);
+                break;    
+    
+                case 'Yes':
+    if (awaitingPreferences) {
+        setIsTyping(true);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        const category = recommendationState.category;
+        addMessage({
+            text: category === 'brand'
+                ? "Please enter one brand name to get recommendations."
+                : `Please enter your preferred ${category}s (you can enter up to 5 ${category}s, separated by commas).`,
+            sender: 'bot'
+        });
+        setIsTyping(false);
+    } else if (recommendationState.recommendations.length > 0 && 
+               recommendationState.currentPage * 5 < recommendationState.recommendations.length) {
+        // Only show more recommendations if there are actually more to show
+        const nextPage = recommendationState.currentPage + 1;
+        setRecommendationState(prev => ({ ...prev, currentPage: nextPage }));
+        await displayRecommendations(
+            recommendationState.recommendations, 
+            nextPage,
+            recommendationState.preferences
+        );
+    } else {
+        // Return to main menu
+        setAwaitingFragranceName(false);
+        setSelectedFragrance('');
+        setAwaitingPreferences(false);
+        setRecommendationState({
+            category: null,
+            preferences: [],
+            currentPage: 0,
+            recommendations: []
+        });
+        
+        setIsTyping(true);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        addMessage({
+            text: "Please select an option:",
+            sender: 'bot',
+            options: ["Fragrance Information", "Recommend Fragrances"]
+        });
+        setIsTyping(false);
+    }
+    break;
 
             case 'No':
                 setAwaitingFragranceName(false);
                 setSelectedFragrance('');
+                setAwaitingPreferences(false);
+                setRecommendationState({
+                    category: null,
+                    preferences: [],
+                    currentPage: 0,
+                    recommendations: []
+                });
                 setIsTyping(true);
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 addMessage({
@@ -408,9 +748,14 @@ const ChatbotWindow: React.FC = () => {
                 });
                 setIsTyping(false);
                 break;
+
+            default:
+                if (option === 'Brand' || option === 'Notes' || option === 'Accords' || option === 'Description') {
+                    await handleGetFragranceInfo(option as FragranceInfoOption);
+                }
+                break;
         }
     };
-
     return (
         <div className="message-container">
             <div className="messages-list">
@@ -423,7 +768,7 @@ const ChatbotWindow: React.FC = () => {
                             className={`message-bubble ${
                                 message.sender === 'bot' ? 'message-bubble-bot' : 'message-bubble-user'
                             }`}
-                            >
+                        >
                             <p className="message-text">{message.text}</p>
                             {message.options && (
                                 <div className="message-options">
@@ -452,23 +797,33 @@ const ChatbotWindow: React.FC = () => {
                 <div ref={messagesEndRef} />
             </div>
 
-            {awaitingFragranceName && (
+            {(awaitingFragranceName || awaitingPreferences) && (
                 <div className="input-container">
                     <input
                         type="text"
                         value={currentInput}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCurrentInput(e.target.value)}
                         className="text-input"
-                        placeholder="Enter fragrance name..."
+                        placeholder={awaitingFragranceName ? "Enter fragrance name..." : "Enter your preferences..."}
                         disabled={loading}
                         onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
                             if (e.key === 'Enter' && !loading) {
-                                handleFragranceInfoRequest(currentInput);
+                                if (awaitingFragranceName) {
+                                    handleFragranceInfoRequest(currentInput);
+                                } else if (awaitingPreferences) {
+                                    handlePreferencesInput(currentInput);
+                                }
                             }
                         }}
                     />
                     <button
-                        onClick={() => handleFragranceInfoRequest(currentInput)}
+                        onClick={() => {
+                            if (awaitingFragranceName) {
+                                handleFragranceInfoRequest(currentInput);
+                            } else if (awaitingPreferences) {
+                                handlePreferencesInput(currentInput);
+                            }
+                        }}
                         disabled={loading}
                         className={`send-button ${loading ? 'button-disabled' : 'button-enabled'}`}
                         aria-label="Send message"
