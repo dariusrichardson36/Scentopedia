@@ -119,7 +119,7 @@ const FragrancePage: React.FC = () => {
   }
 
   return (
-    <div className="container">
+    <div className="">
       {/* Header Section */}
       <div className="flex items-center w-full mr-32 justify-center">
         <div className="w-1/2 h-full flex items-center justify-center overflow-hidden rounded-lg">
@@ -199,16 +199,34 @@ const FragrancePage: React.FC = () => {
             <Tab label="Where to Buy" sx={{ fontFamily: 'Roboto Condensed', fontSize: '1.1rem', fontWeight: 'md' }} />
           </Tabs>
 
-          <TabPanel value={value} index={0}>
-            <h1 className="text-center font-bold mt-10 font-title text-4xl">Description</h1>
+          <TabPanel value={value} index={0}>            <h1 className="text-center font-bold mt-10 font-title text-4xl">Description</h1>
             <div className="text-center text-xl font-body mt-6 max-w-screen mx-auto px-4">{fragrance.description}</div>
+            {/* Perfumer Section */}
+            {fragrance.perfumer ? (
+              <>
+                <h3 className="text-4xl text-center font-title font-bold text-gray-800 mt-10">Perfumer</h3>
+                <div className="text-center text-2xl mt-6 font-body text-gray-800">{fragrance.perfumer}</div>
+              </>
+            ) : (
+              <div className="text-center text-gray-500 pt-4 text-lg">No perfumers available.</div>
+            )}
+            {/* Accords Section */}
+            {fragrance.accords?.length ? (
+              <>
+                <h3 className="text-4xl text-center font-title font-bold text-gray-800 mt-10">Accords</h3>
+                <div className="text-center text-2xl mt-6 font-body text-gray-800">
+                  {fragrance.accords.map((accord) => accord.charAt(0).toUpperCase() + accord.slice(1)).join(', ')}
+                </div>
+              </>
+            ) : (
+              <div className="text-center text-gray-500 pt-4 text-lg">No accords available.</div>
+            )}
           </TabPanel>
           <TabPanel value={value} index={1}>
             <div className="text-center text-xl font-body mt-6">Where to Buy content will go here.</div>
           </TabPanel>
         </Box>
       </div>
-
       {/* Modal for Adding Fragrance to Lists */}
       <Dialog open={modalOpen} onClose={handleModalClose}>
         <DialogTitle>Add "{fragrance.fragranceName}" to Your Wishlists</DialogTitle>
