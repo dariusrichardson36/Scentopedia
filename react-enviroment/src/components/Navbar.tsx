@@ -2,9 +2,7 @@ import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/authContext/AuthProvider';
-import { useEffect, useState } from 'react';
-import { db } from '../lib/firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import { useState } from 'react';
 import NavSearchBar from './NavSearchBar';
 
 const navigation = [
@@ -19,24 +17,8 @@ function classNames(...classes: string[]) {
 
 export default function Navbar() {
   const location = useLocation();
-  const { user, loading, login, logout } = useAuth();
-  const [profilePicture, setProfilePicture] = useState<string | null>(null);
+  const { user, loading, login, logout, profilePicture } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
-
-  useEffect(() => {
-    const fetchProfilePicture = async () => {
-      if (user) {
-        const userDocRef = doc(db, 'users', user.email);
-        const userDoc = await getDoc(userDocRef);
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          setProfilePicture(userData.profilePicture || null);
-        }
-      }
-    };
-
-    fetchProfilePicture();
-  }, [user]);
 
   return (
     <Disclosure as="nav" className="bg-white h-24">
