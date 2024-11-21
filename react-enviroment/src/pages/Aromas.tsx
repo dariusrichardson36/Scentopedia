@@ -16,7 +16,7 @@ const Aromas: React.FC = () => {
     <div className="relative w-full min-h-screen overflow-hidden">
       {/* Video Background */}
       <video className="video-background fade-in-video" autoPlay loop muted playsInline>
-        <source src="/AromaDude.mp4" type="video/mp4" />
+        <source src="/AromaAbstract.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
