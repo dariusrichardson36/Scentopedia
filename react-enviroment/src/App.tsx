@@ -6,32 +6,29 @@ import ChatApp from './ChatApp';
 import Navbar from './components/Navbar';
 import { AuthProvider } from './contexts/authContext/AuthProvider';
 import About from './pages/About';
-import Brands from './pages/Brands';
 import FragrancePage from './pages/FragrancePage';
 import Fragrances from './pages/Fragrances';
 import Home from './pages/Home';
-import Notes from './pages/Notes';
 import YourListsPage from './pages/YourListsPage';
+import Aromas from './pages/Aromas';
+import AccordDetail from './pages/AccordDetail'; // New import for Accord detail page
 
 // App Component
-// This component serves as the root component for the entire application. It includes routing and authentication context setup.
 function App() {
   return (
     <AuthProvider>
       <Router>
         <Navbar />
-        {/* Routes define the different paths in the application and the corresponding components to render. */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/fragrances" element={<Fragrances />} />
-          <Route path="/brands" element={<Brands />} />
-          <Route path="/notes" element={<Notes />} />
+          <Route path="/aromas" element={<Aromas />} />
           <Route path="/about" element={<About />} />
           <Route path="/your-lists" element={<YourListsPage />} />
           <Route path="/fragrance/:id" element={<FragrancePage />} />
+          <Route path="/accord/:type" element={<AccordDetail />} /> {/* New route for accord detail */}
         </Routes>
       </Router>
-      {/* ChatApp component renders a chat feature for user interaction */}
       <ChatApp />
     </AuthProvider>
   );

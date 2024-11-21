@@ -10,7 +10,7 @@ import NavSearchBar from './NavSearchBar';
 // Define the navigation links for the Navbar.
 const navigation = [
   { name: 'Fragrances', href: '/fragrances' },
-  { name: 'Brands', href: '/brands' },
+  { name: 'Aromas', href: '/aromas' },
   { name: 'About', href: '/about' },
 ];
 
