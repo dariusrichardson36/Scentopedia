@@ -133,10 +133,43 @@ const FragrancePage: React.FC = () => {
           <h1 className="font-bold text-6xl font-title">{fragrance.fragranceName}</h1>
           <h2 className="text-xl text-gray-600 font-body pb-10 pl-1 pt-2">by {fragrance.brandName}</h2>
 
+          {/* Notes Section */}
+          <div className="bg-red-50 w-96 rounded-lg mx-auto outline shadow-2xl">
+            {fragrance.notes?.top_notes?.length ? (
+              <>
+                <div className="pl-1 text-center font-title text-2xl">Top Notes</div>
+                <div className="text-center font-body text-gray-500 pt-4 text-lg">
+                  {fragrance.notes.top_notes.join(', ')}
+                </div>
+              </>
+            ) : (
+              <div className="text-center text-gray-500 pt-4 text-lg">No top notes available.</div>
+            )}
+            {fragrance.notes?.middle_notes?.length ? (
+              <>
+                <div className="pl-1 pt-10 text-center font-title text-2xl">Middle Notes</div>
+                <div className="text-center font-body text-gray-500 pt-4 text-lg">
+                  {fragrance.notes.middle_notes.join(', ')}
+                </div>
+              </>
+            ) : (
+              <div className="text-center text-gray-500 pt-4 text-lg">No middle notes available.</div>
+            )}
+            {fragrance.notes?.base_notes?.length ? (
+              <>
+                <div className="pl-1 pt-10 text-center font-title text-2xl">Base Notes</div>
+                <div className="text-center font-body text-gray-500 pt-4 text-lg">
+                  {fragrance.notes.base_notes.join(', ')}
+                </div>
+              </>
+            ) : (
+              <div className="text-center text-gray-500 pt-4 text-lg">No base notes available.</div>
+            )}
+          </div>
+
           {/* Add to List Buttons */}
           {user && (
             <div className="mt-4">
-              {/* Add to Favorites Button */}
               <Button
                 variant="contained"
                 color="secondary"
@@ -146,7 +179,6 @@ const FragrancePage: React.FC = () => {
                 Add to Favorites
               </Button>
 
-              {/* Add to Wishlists Button */}
               <Button
                 variant="contained"
                 color="primary"
