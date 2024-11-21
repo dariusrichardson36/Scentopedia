@@ -12,6 +12,7 @@ import Fragrances from './pages/Fragrances';
 import Home from './pages/Home';
 import Notes from './pages/Notes';
 import YourListsPage from './pages/YourListsPage';
+import UserProfilePage from './pages/UserProfilePage';
 
 // App Component
 // This component serves as the root component for the entire application. It includes routing and authentication context setup.
@@ -28,6 +29,7 @@ function App() {
           <Route path="/notes" element={<Notes />} />
           <Route path="/about" element={<About />} />
           <Route path="/your-lists" element={<YourListsPage />} />
+          <Route path="/profile-page" element={<UserProfilePage />}/>
           <Route path="/fragrance/:id" element={<FragrancePage />} />
         </Routes>
       </Router>
