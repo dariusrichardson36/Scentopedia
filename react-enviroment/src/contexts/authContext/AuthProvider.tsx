@@ -1,7 +1,8 @@
-// src/contexts/authContext/AuthProvider.tsx
+//src/contexts/authContext/AuthProvider.tsx
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { auth } from '../../lib/firebase';
+import { auth, db } from '../../lib/firebase';
 import { onAuthStateChanged, signInWithPopup, signOut, GoogleAuthProvider, User } from 'firebase/auth';
+import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore'; // Firestore imports
 
 // Define the shape of the context value
 interface AuthContextType {
@@ -21,14 +22,36 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     // Listen for Firebase Auth state changes
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+        const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+            if (firebaseUser) {
+                await handleUserSignIn(firebaseUser); // Handle Firestore document creation
+            }
             setUser(firebaseUser);
             setLoading(false);
         });
+
         return () => unsubscribe();
     }, []);
 
-    // Login function using Google as the provider
+    const handleUserSignIn = async (user: User) => {
+        if (!user.email) return; // Ensure the user has an email
+
+        const userDocRef = doc(db, 'users', user.email); // Firestore document reference
+        const userDoc = await getDoc(userDocRef);
+
+        if (!userDoc.exists()) {
+            // Create the user's document if it doesn't exist
+            await setDoc(userDocRef, {
+                email: user.email,
+                username: user.displayName || 'Anonymous',
+                profilePicture: user.photoURL || '/assets/default-avatar.png',
+                createdAt: serverTimestamp(),
+                favorites: [], // Initialize an empty favorites list
+                wishlists: {}, // Initialize an empty wishlists object
+            });
+        }
+    };
+
     const login = async () => {
         const provider = new GoogleAuthProvider();
         await signInWithPopup(auth, provider);

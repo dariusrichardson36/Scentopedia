@@ -12,6 +12,7 @@ import Home from './pages/Home';
 import YourListsPage from './pages/YourListsPage';
 import Aromas from './pages/Aromas';
 import AccordDetail from './pages/AccordDetail'; // New import for Accord detail page
+import UserProfilePage from './pages/UserProfilePage';
 
 // App Component
 function App() {
@@ -25,6 +26,7 @@ function App() {
           <Route path="/aromas" element={<Aromas />} />
           <Route path="/about" element={<About />} />
           <Route path="/your-lists" element={<YourListsPage />} />
+          <Route path="/profile-page" element={<UserProfilePage />}/>
           <Route path="/fragrance/:id" element={<FragrancePage />} />
           <Route path="/accord/:type" element={<AccordDetail />} /> {/* New route for accord detail */}
         </Routes>
