@@ -351,6 +351,7 @@ const ChatbotWindow: React.FC = () => {
         }
     };
 
+    // Update the displayRecommendations function to handle the flow better
     const displayRecommendations = async (
         recommendations: Fragrance[], 
         page: number = 0,
@@ -363,7 +364,7 @@ const ChatbotWindow: React.FC = () => {
         
         if (currentPageRecommendations.length === 0) {
             addMessage({
-                text: "There are no more recommendations at this time.",
+                text: "I've shown you all available recommendations.",
                 sender: 'bot'
             });
             await askIfAnythingElse();
@@ -373,34 +374,64 @@ const ChatbotWindow: React.FC = () => {
         let recommendationText = `Here are your recommended fragrances based on your preferred ${recommendationState.category}:\n\n`;
         
         currentPageRecommendations.forEach((fragrance, index) => {
-            // Clean and normalize fragrance notes
-            const normalizedFragranceNotes = fragrance.combNotes.map(note => 
-                note.replace(/^"(.+)"$/, '$1').toLowerCase().trim()
-            );
-            
-            // Clean and normalize preferences
-            const normalizedPreferences = preferences.map(pref => 
-                pref.toLowerCase().trim()
-            );
-    
-            // Find matching notes for this fragrance
-            const matchingNotes = normalizedPreferences.filter(pref => 
-                normalizedFragranceNotes.includes(pref)
-            );
-    
-            // Format the matching notes string
-            let matchingNotesString = '';
-            if (matchingNotes.length === 1) {
-                matchingNotesString = matchingNotes[0];
-            } else if (matchingNotes.length === 2) {
-                matchingNotesString = `${matchingNotes[0]} and ${matchingNotes[1]}`;
-            } else if (matchingNotes.length > 2) {
-                matchingNotesString = matchingNotes.join(', ');
+            if (recommendationState.category === 'brand') {
+                // For brand category, just show the fragrance name
+                recommendationText += `${index + 1}. ${fragrance.fragranceName}\n\n`;
+            } else {
+                // For notes and accords categories, show both fragrance name and brand
+                recommendationText += `${index + 1}. ${fragrance.fragranceName} by ${fragrance.brandName}\n`;
+        
+                if (recommendationState.category === 'notes') {
+                    const normalizedFragranceNotes = fragrance.combNotes.map(note => 
+                        note.replace(/^"(.+)"$/, '$1').toLowerCase().trim()
+                    );
+                    
+                    const normalizedPreferences = preferences.map(pref => 
+                        pref.toLowerCase().trim()
+                    );
+        
+                    const matchingNotes = normalizedPreferences.filter(pref => 
+                        normalizedFragranceNotes.includes(pref)
+                    );
+        
+                    let matchingNotesString = '';
+                    if (matchingNotes.length === 1) {
+                        matchingNotesString = matchingNotes[0];
+                    } else if (matchingNotes.length === 2) {
+                        matchingNotesString = `${matchingNotes[0]} and ${matchingNotes[1]}`;
+                    } else if (matchingNotes.length > 2) {
+                        matchingNotesString = matchingNotes.join(', ');
+                    }
+        
+                    recommendationText += `   (Contains your preferred note(s): ${matchingNotesString})\n`;
+                } else if (recommendationState.category === 'accords') {
+                    const fragranceAccords = fragrance.accords.map(accord => 
+                        accord.toLowerCase().trim()
+                    );
+                    
+                    const normalizedPreferences = preferences.map(pref => 
+                        pref.toLowerCase().trim()
+                    );
+        
+                    const matchingAccords = fragranceAccords.filter(accord => 
+                        normalizedPreferences.some(pref => accord.includes(pref))
+                    );
+        
+                    if (matchingAccords.length > 0) {
+                        let matchingAccordsString = '';
+                        if (matchingAccords.length === 1) {
+                            matchingAccordsString = matchingAccords[0];
+                        } else if (matchingAccords.length === 2) {
+                            matchingAccordsString = `${matchingAccords[0]} and ${matchingAccords[1]}`;
+                        } else if (matchingAccords.length > 2) {
+                            matchingAccordsString = matchingAccords.join(', ');
+                        }
+        
+                        recommendationText += `   (Contains your preferred accord(s): ${matchingAccordsString})\n`;
+                    }
+                }
+                recommendationText += '\n';
             }
-    
-            // Add to recommendation text
-            recommendationText += `${index + 1}. ${fragrance.fragranceName} by ${fragrance.brandName}\n`;
-            recommendationText += `   (Contains your preferred note(s): ${matchingNotesString})\n\n`;
         });
     
         addMessage({
@@ -408,7 +439,7 @@ const ChatbotWindow: React.FC = () => {
             sender: 'bot'
         });
     
-        if (end < recommendations.length) {
+        if (recommendations.length > end) {
             addMessage({
                 text: "Would you like to see more recommendations?",
                 sender: 'bot',
@@ -416,7 +447,7 @@ const ChatbotWindow: React.FC = () => {
             });
         } else {
             addMessage({
-                text: "There are no more recommendations at this time.",
+                text: "That's all the recommendations I have based on your preferences.",
                 sender: 'bot'
             });
             await askIfAnythingElse();
@@ -557,11 +588,11 @@ const ChatbotWindow: React.FC = () => {
     const askIfAnythingElse = async () => {
         await new Promise(resolve => setTimeout(resolve, 1000));
         addMessage({
-            text: "Is there anything else I can help you with?",
+            text: "Is there anything else you'd like help with?",
             sender: 'bot',
             options: ['Yes', 'No']
         });
-    };    
+    };
     
     const handleGetFragranceInfo = async (option: FragranceInfoOption) => {
         setLoading(true);
@@ -692,18 +723,26 @@ const ChatbotWindow: React.FC = () => {
             sender: 'bot'
         });
         setIsTyping(false);
-    } else if (recommendationState.recommendations.length > 0 && 
-               recommendationState.currentPage * 5 < recommendationState.recommendations.length) {
-        // Only show more recommendations if there are actually more to show
+    } else if (messages[messages.length - 1]?.text === "Would you like to see more recommendations?") {
+        // We know there are more recommendations because we only show this message if there are more
         const nextPage = recommendationState.currentPage + 1;
         setRecommendationState(prev => ({ ...prev, currentPage: nextPage }));
         await displayRecommendations(
-            recommendationState.recommendations, 
+            recommendationState.recommendations,
             nextPage,
             recommendationState.preferences
         );
+    } else if (messages[messages.length - 1]?.text.startsWith("Did you mean")) {
+        // Handle similar fragrance flow
+        const fragranceName = messages[messages.length - 1]?.text.replace("Did you mean ", "").replace("?", "");
+        setSelectedFragrance(fragranceName);
+        addMessage({
+            text: `Please choose what information you would like to know about ${fragranceName}.`,
+            sender: 'bot',
+            options: ['Brand', 'Notes', 'Accords', 'Description']
+        });
     } else {
-        // Return to main menu
+        // Must be responding to "Is there anything else I can help you with?"
         setAwaitingFragranceName(false);
         setSelectedFragrance('');
         setAwaitingPreferences(false);
@@ -725,35 +764,50 @@ const ChatbotWindow: React.FC = () => {
     }
     break;
 
-            case 'No':
-                setAwaitingFragranceName(false);
-                setSelectedFragrance('');
-                setAwaitingPreferences(false);
-                setRecommendationState({
-                    category: null,
-                    preferences: [],
-                    currentPage: 0,
-                    recommendations: []
-                });
-                setIsTyping(true);
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                addMessage({
-                    text: "Very well. Hopefully you found my help to be beneficial.",
-                    sender: 'bot'
-                });
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                addMessage({
-                    text: "Please feel free to close this chat now. Have a great day!",
-                    sender: 'bot'
-                });
-                setIsTyping(false);
-                break;
-
-            default:
-                if (option === 'Brand' || option === 'Notes' || option === 'Accords' || option === 'Description') {
-                    await handleGetFragranceInfo(option as FragranceInfoOption);
-                }
-                break;
+    case 'No':
+    // Check if we're responding to "Would you like to see more recommendations?"
+    if (messages[messages.length - 1]?.text === "Would you like to see more recommendations?") {
+        await askIfAnythingElse();
+    } 
+    // Check if we're responding to "Is there anything else you'd like help with?"
+    // Note: The exact message text must match what's in askIfAnythingElse()
+    else if (messages[messages.length - 1]?.text === "Is there anything else you'd like help with?") {
+        setAwaitingFragranceName(false);
+        setSelectedFragrance('');
+        setAwaitingPreferences(false);
+        setRecommendationState({
+            category: null,
+            preferences: [],
+            currentPage: 0,
+            recommendations: []
+        });
+        setIsTyping(true);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        addMessage({
+            text: "Very well. Hopefully you found my help to be beneficial.",
+            sender: 'bot'
+        });
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        addMessage({
+            text: "Please feel free to close this chat now. Have a great day!",
+            sender: 'bot'
+        });
+        setIsTyping(false);
+    }
+    // Handle any other "No" responses (like from fragrance info flow)
+    else {
+        setAwaitingFragranceName(false);
+        setSelectedFragrance('');
+        setAwaitingPreferences(false);
+        setRecommendationState({
+            category: null,
+            preferences: [],
+            currentPage: 0,
+            recommendations: []
+        });
+        await askIfAnythingElse();
+    }
+    break;
         }
     };
     return (
