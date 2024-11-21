@@ -11,8 +11,10 @@ import Fragrances from './pages/Fragrances';
 import Home from './pages/Home';
 import YourListsPage from './pages/YourListsPage';
 import Aromas from './pages/Aromas';
-import AccordDetail from './pages/AccordDetail'; // New import for Accord detail page
+import AccordDetail from './pages/AccordDetail'; 
 import UserProfilePage from './pages/UserProfilePage';
+import ProtectedRoute from './components/ProtectedRoute';
+
 
 // App Component
 function App() {
@@ -21,14 +23,25 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/fragrances" element={<Fragrances />} />
           <Route path="/aromas" element={<Aromas />} />
           <Route path="/about" element={<About />} />
-          <Route path="/your-lists" element={<YourListsPage />} />
           <Route path="/profile-page" element={<UserProfilePage />}/>
           <Route path="/fragrance/:id" element={<FragrancePage />} />
-          <Route path="/accord/:type" element={<AccordDetail />} /> {/* New route for accord detail */}
+          <Route path="/accord/:type" element={<AccordDetail />} />
+
+          {/* Protected Routes */}
+          <Route
+            path="/your-lists"
+            element={
+              <ProtectedRoute>
+                <YourListsPage />
+              </ProtectedRoute>
+            }
+          />
+
         </Routes>
       </Router>
       <ChatApp />
