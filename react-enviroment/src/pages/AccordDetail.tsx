@@ -38,6 +38,21 @@ const AccordDetail: React.FC = () => {
         description: 'Green accords are crisp, natural, and refreshing, reminiscent of freshly cut grass, leaves, and herbs. They embody the lively vibrancy of nature, evoking the essence of lush forests and tranquil meadows. With their clean and slightly aromatic quality, green accords offer a sense of renewal and balance, perfect for those who enjoy a connection to the outdoors and a breath of fresh air.',
         videoSrc: '/GreenAccord.mp4',
       },
+    herbal: {
+        title: 'Herbal Accord',
+        description: 'Herbal accords are aromatic, calming, and earthy, featuring the scents of natural herbs like sage, thyme, basil, and rosemary. They evoke the soothing essence of an herb garden, blending slightly spicy, fresh, and green notes. Herbal accords are perfect for those who appreciate the comforting, natural aromas that bring to mind both culinary delights and the tranquility of nature, offering a sense of relaxation and well-being.',
+        videoSrc: '/HerbalAccord.mp4',
+      },
+    gourmand: {
+        title: 'Gourmand Accord',
+        description: 'Gourmand accords are rich, indulgent, and delectable, evoking the comforting aromas of desserts and sweet treats. Featuring notes like vanilla, caramel, chocolate, and honey, these accords bring a sense of warmth and deliciousness, often with a hint of spice. Gourmand fragrances are perfect for those who want to embrace a cozy, mouthwatering scent that feels like a delightful indulgence, capturing the essence of sweet confections and culinary delights.',
+        videoSrc: '/GourmandAccord.mp4',
+      },
+    oriental: {
+        title: 'Oriental Accord',
+        description: 'Oriental accords are warm, exotic, and captivating, blending rich spices, resins, and luxurious florals. These accords often feature notes like amber, vanilla, musk, and incense, creating an opulent and sensual fragrance that lingers. Oriental scents evoke the allure of far-off lands and the mystery of ancient rituals, perfect for those who appreciate a bold, enveloping aroma that embodies both sophistication and passion.',
+        videoSrc: '/OrientalAccord.mp4',
+      },
   };
 
   const accord = accordData[type || ''];

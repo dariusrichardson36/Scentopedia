@@ -42,6 +42,24 @@ const accords: Accord[] = [
     description: 'Green accords are crisp and refreshing, capturing the natural essence of freshly cut grass, leaves, and herbs.',
     gradient: 'from-green-500 to-teal-400',
   },
+  {
+    id: 'herbal',
+    title: 'Herbal Accord',
+    description: 'Herbal accords are aromatic and earthy, featuring the fresh scents of herbs like sage and rosemary.',
+    gradient: 'from-green-600 to-lime-400',
+  },
+  {
+    id: 'gourmand',
+    title: 'Gourmand Accord',
+    description: 'Gourmand accords are rich and indulgent, evoking sweet aromas like vanilla, caramel, and chocolate.',
+    gradient: 'from-amber-500 to-yellow-400',
+  },
+  {
+    id: 'oriental',
+    title: 'Oriental Accord',
+    description: 'Oriental accords are warm and exotic, blending rich spices, amber, and musk for a sensual fragrance.',
+    gradient: 'from-orange-600 to-red-500',
+  }  
 ];
 
 const Aromas: React.FC = () => {
