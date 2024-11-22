@@ -3,6 +3,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import InfiniteScrollFragrances from '../components/InfiniteScrollFragrances';
+import './Home.css'; // Import CSS file for animation styles
 
 // Home Component
 // This component renders the home page of the Scentopedia website. It includes sections with background images and content that welcomes users, allows them to explore fragrances, and invites them to join the community.
@@ -16,22 +17,22 @@ const Home: React.FC = () => {
           Your browser does not support the video tag.
         </video>
         <div className="relative z-10 text-center">
-          <h1 className="text-white mt-28 font-title text-8xl drop-shadow-lg">
+          <h1 className="text-white mt-28 font-title text-8xl drop-shadow-lg fade-in-welcome">
             Welcome to the world of fragrance
           </h1>
-          <div className="py-10">
-            <p className="text-white text-8xl pb-10 font-title drop-shadow-lg">
-              Find the scent for you
+          <div className="fade-in-journey">
+            <p className="text-white text-5xl font-title drop-shadow-lg mt-4">
+              Your journey begins here
             </p>
-            <div className="mt-8">
-              <Link to="/fragrances">
-                <button
-                  className="bg-white text-black py-4 px-8 rounded-none font-title text-xl hover:bg-gray-200 transition duration-300 ease-in-out"
-                >
-                  Find a Fragrance
-                </button>
-              </Link>
-            </div>
+          </div>
+          <div className="fade-in-button mt-16">
+            <Link to="/fragrances">
+              <button
+                className="bg-white text-black py-4 px-8 rounded-none font-title text-xl hover:bg-gray-200 transition duration-300 ease-in-out"
+              >
+                Find a Fragrance
+              </button>
+            </Link>
           </div>
         </div>
       </div>
