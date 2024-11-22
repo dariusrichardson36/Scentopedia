@@ -20,9 +20,24 @@ const AccordDetail: React.FC = () => {
     },
     woody: {
       title: 'Woody Accord',
-      description: 'Woody accords evoke warmth and natural richness. They often include notes from trees such as sandalwood, cedarwood, and patchouli, delivering an earthy, comforting aroma that lingers.',
+      description: 'Woody accords evoke a sense of grounding and natural warmth, embodying the essence of majestic forests and sunlit groves. They blend rich, earthy notes from woods like cedarwood, sandalwood, and patchouli, creating a comforting and timeless aroma that lingers gently in the air. Woody scents are often deep, resinous, and slightly smoky, conjuring feelings of coziness and rustic elegance. Perfect for those seeking a connection to nature’s heart, woody accords bring balance, depth, and a hint of mystery, enveloping you in the tranquil embrace of the wilderness.',
       videoSrc: '/WoodAccord.mp4',
     },
+    citrus: {
+        title: 'Citrus Accord',
+        description: 'Citrus accords are bright, fresh, and invigorating, capturing the zestiness of sun-ripened fruits like lemons, oranges, and bergamot. They are known for their sparkling, uplifting quality that energizes the senses, evoking the crispness of a summer morning. These accords bring a clean and lively aroma, perfect for those who seek a burst of freshness and radiance in their fragrance.',
+        videoSrc: '/CitrusAccord.mp4',
+      },
+    floral: {
+        title: 'Floral Accord',
+        description: 'Floral accords are romantic and enchanting, featuring the delicate fragrance of blossoms like rose, jasmine, lily, and peony. These accords range from soft and powdery to sweet and lush, encapsulating the timeless elegance of blooming gardens. Perfect for those who cherish the beauty of nature, floral scents evoke grace, femininity, and a gentle charm, making them an enduring favorite in perfumery.',
+        videoSrc: '/FloralAccord.mp4',
+      },
+    green: {
+        title: 'Green Accord',
+        description: 'Green accords are crisp, natural, and refreshing, reminiscent of freshly cut grass, leaves, and herbs. They embody the lively vibrancy of nature, evoking the essence of lush forests and tranquil meadows. With their clean and slightly aromatic quality, green accords offer a sense of renewal and balance, perfect for those who enjoy a connection to the outdoors and a breath of fresh air.',
+        videoSrc: '/GreenAccord.mp4',
+      },
   };
 
   const accord = accordData[type || ''];
@@ -37,7 +52,7 @@ const AccordDetail: React.FC = () => {
   }
 
   return (
-    <div className="relative w-full min-h-screen overflow-hidden bg-white text-black">
+    <div className="relative w-full min-h-screen overflow-hidden">
       {/* Video Background */}
       <video
         className="video-background fade-in-video"
@@ -51,9 +66,11 @@ const AccordDetail: React.FC = () => {
       </video>
 
       {/* Content Overlay */}
-      <div className="content-overlay">
-        <h2>{accord.title}</h2>
-        <p>{accord.description}</p>
+      <div className="container mx-auto py-6 px-4 text-center">
+        <div className="p-6 border-gradient-to-r from-purple-400 via-pink-500 to-red-500 rounded-lg shadow-lg backdrop-blur-md mx-auto mt-20 max-w-4xl border border-white border-opacity-50">
+          <h2 className="text-4xl font-bold text-white mb-4">{accord.title}</h2>
+          <p className="text-lg text-white font-bold">{accord.description}</p>
+        </div>
       </div>
     </div>
   );
