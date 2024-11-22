@@ -30,7 +30,7 @@ const AccordDetail: React.FC = () => {
       },
     floral: {
         title: 'Floral Accord',
-        description: 'Floral accords are romantic and enchanting, featuring the delicate fragrance of blossoms like rose, jasmine, lily, and peony. These accords range from soft and powdery to sweet and lush, encapsulating the timeless elegance of blooming gardens. Perfect for those who cherish the beauty of nature, floral scents evoke grace, femininity, and a gentle charm, making them an enduring favorite in perfumery.',
+        description: 'Floral accords are romantic and enchanting, featuring the delicate fragrance of blossoms like rose, jasmine, lily, and peony. These accords range from soft and powdery to sweet and lush, encapsulating the timeless elegance of blooming gardens. Perfect for those who cherish the beauty of nature, floral scents evoke grace and a gentle charm, making them an enduring favorite in perfumery.',
         videoSrc: '/FloralAccord.mp4',
       },
     green: {
