@@ -10,7 +10,7 @@ const About: React.FC = () => {
         <div className="about-container">
             <h2 className="about-heading">About Scentopedia</h2>
             <p className="about-text">
-                Welcome to Scentopedia, a fragrance discovery platform created by five friends who are passionate about scents. We believe...
+            Welcome to Scentopedia, a fragrance discovery platform created by five friends who are passionate about scents. We believe that every man deserves to find a signature scent that reflects his personality, style, and confidence. Our platform is designed to make discovering, exploring, and choosing the perfect fragrance an enjoyable and tailored experience, with options ranging from timeless classics to modern innovations.
             </p>
         </div>
     );
