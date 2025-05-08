@@ -21,25 +21,34 @@
 
 ## 🚀 How to Run Locally
 **1. Clone the repository:**
-*git clone https://github.com/dariusrichardson36/Scentopedia.git*
+  ```bash
+  git clone https://github.com/dariusrichardson36/Scentopedia.git
+  ```
 
 **2. Navigate to the project directory:**
-*cd Scentopedia*
+  ```bash
+  cd Scentopedia
+  ```
 
 **3. Install dependencies:**
-*npm install*
+  ```bash
+  npm install
+  ```
 
 **4. Create a `.env` file with your Firebase configuration. Inside the `.env`, you will enter your Firebase credentials:**
-
-*VITE_API_KEY=your_api_key<br>
-VITE_AUTH_DOMAIN=your_project_id.firebaseapp.com<br>
-VITE_PROJECT_ID=your_project_id<br>
-VITE_STORAGE_BUCKET=your_project_id.appspot.com<br>
-VITE_MESSAGING_SENDER_ID=your_messaging_sender_id<br>
-VITE_APP_ID=your_app_id*
+  ```bash
+  VITE_API_KEY=your_api_key<br>
+  VITE_AUTH_DOMAIN=your_project_id.firebaseapp.com<br>
+  VITE_PROJECT_ID=your_project_id<br>
+  VITE_STORAGE_BUCKET=your_project_id.appspot.com<br>
+  VITE_MESSAGING_SENDER_ID=your_messaging_sender_id<br>
+  VITE_APP_ID=your_app_id*
+  ```
 
 **5. Start the development server:**
-*npm run dev*
+  ```bash
+  npm run dev
+  ```
 
 ## 📸 Screenshots
 
