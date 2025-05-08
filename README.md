@@ -43,10 +43,10 @@ VITE_APP_ID=your_app_id*
 ## 📸 Screenshots
 
 ### 🖼️ Homepage Preview
-![Homepage](./src/assets/Screenshots/Homepage.png)
+![Homepage](./react-environment/src/assets/Screenshots/Homepage.png)
 
 ### 🔍 Fragrance Detail Page
-![Fragrance Page](./src/assets/Screenshots/Fragrance1.png)
+![Fragrance Page](./react-environment/src/assets/Screenshots/Fragrance1.png)
 
 
 ## 📫 Contact
