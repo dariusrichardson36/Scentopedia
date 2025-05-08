@@ -69,7 +69,6 @@
 
 
 ## 📫 Contact
-Darius Richardson  
-
+**Darius Richardson**  
 - [LinkedIn](https://www.linkedin.com/in/darius-richardson-ga-tech)  
 - [Email Me](mailto:darius.richardson36@yahoo.com)
