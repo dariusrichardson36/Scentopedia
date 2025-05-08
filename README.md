@@ -42,11 +42,20 @@ VITE_APP_ID=your_app_id*
 
 ## 📸 Screenshots
 
-### 🖼️ Homepage Preview
+### 🏠 Homepage Preview  
 ![Homepage](./react-environment/src/assets/Screenshots/Homepage.png)
 
-### 🔍 Fragrance Detail Page
-![Fragrance Page](./react-environment/src/assets/Screenshots/Fragrance1.png)
+### 🔍 Fragrance Page  
+![Fragrance Detail](./react-environment/src/assets/Screenshots/Fragrance1.png)
+
+### ✏️ Search Bar Functionality  
+![Search Bar](./react-environment/src/assets/Screenshots/SearchBar.png)
+
+### 💬 Chatbot Assistant  
+![Chatbot Interaction](./react-environment/src/assets/Screenshots/Chat1.png)
+
+### 🔧 Firebase Backend Setup  
+![Firebase Console](./react-environment/src/assets/Screenshots/Firebase1.png)
 
 
 ## 📫 Contact
