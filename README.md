@@ -41,13 +41,12 @@ VITE_APP_ID=your_app_id*
 *npm run dev*
 
 ## 📸 Screenshots
-[Upload any UI screenshots here]
 
 ### 🖼️ Homepage Preview
-![Homepage](./src/assets/homepage.png)
+![Homepage](./src/assets/Screenshots/Homepage.png)
 
 ### 🔍 Fragrance Detail Page
-![Fragrance Detail](./src/assets/fragrance-detail.png)
+![Fragrance Page](./src/assets/Screenshots/Fragrance1.png)
 
 
 ## 📫 Contact
