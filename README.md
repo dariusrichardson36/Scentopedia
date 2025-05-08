@@ -38,7 +38,7 @@ VITE_STORAGE_BUCKET=your_project_id.appspot.com<br>
 VITE_MESSAGING_SENDER_ID=your_messaging_sender_id<br>
 VITE_APP_ID=your_app_id*
 
-**6. Start the development server:**
+**5. Start the development server:**
 *npm run dev*
 
 ## 📸 Screenshots
