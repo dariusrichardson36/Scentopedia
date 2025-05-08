@@ -1,6 +1,6 @@
 # 🌸 Scentopedia – Capstone Project
 
-**Scentopedia** is a full-stack web application designed to help users explore fragrances, save their favorites, create wishlists, create user accounts, increase general fragrance knowledge, and locate nearby stores.
+**Scentopedia** is a full-stack web application designed to help users explore fragrances, save their favorites, create wishlists, create user accounts, learn more about fragrance families, accords, and scent profiles, and locate nearby stores.
 
 ## 🛠️ Tech Stack
 - **Frontend**: React, TypeScript, Vite
