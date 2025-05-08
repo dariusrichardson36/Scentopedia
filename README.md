@@ -43,6 +43,13 @@ VITE_APP_ID=your_app_id*
 ## 📸 Screenshots
 [Upload any UI screenshots here]
 
+### 🖼️ Homepage Preview
+![Homepage](./src/assets/homepage.png)
+
+### 🔍 Fragrance Detail Page
+![Fragrance Detail](./src/assets/fragrance-detail.png)
+
+
 ## 📫 Contact
 Darius Richardson  
 
