@@ -37,12 +37,12 @@
 
 **4. Create a `.env` file with your Firebase configuration. Inside the `.env`, you will enter your Firebase credentials:**
   ```bash
-  VITE_API_KEY=your_api_key<br>
-  VITE_AUTH_DOMAIN=your_project_id.firebaseapp.com<br>
-  VITE_PROJECT_ID=your_project_id<br>
-  VITE_STORAGE_BUCKET=your_project_id.appspot.com<br>
-  VITE_MESSAGING_SENDER_ID=your_messaging_sender_id<br>
-  VITE_APP_ID=your_app_id*
+  VITE_API_KEY=your_api_key
+  VITE_AUTH_DOMAIN=your_project_id.firebaseapp.com
+  VITE_PROJECT_ID=your_project_id
+  VITE_STORAGE_BUCKET=your_project_id.appspot.com
+  VITE_MESSAGING_SENDER_ID=your_messaging_sender_id
+  VITE_APP_ID=your_app_id
   ```
 
 **5. Start the development server:**
